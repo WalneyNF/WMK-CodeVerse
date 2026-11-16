@@ -1,0 +1,35 @@
+name: WMK Portugol - Testes
+on:
+  push:
+    paths:
+      - "wmk-portugol/**"
+      - ".github/workflows/wmk-portugol.yml"
+  pull_request:
+    paths:
+      - "wmk-portugol/**"
+      - ".github/workflows/wmk-portugol.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validar-portugol:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obter codigo
+        uses: actions/checkout@v4
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verificar sintaxe Python
+        run: python -m compileall -q wmk-portugol
+      - name: Executar testes de compilador
+        run: python -m unittest discover -s wmk-portugol -p "test_*.py" -v
+      - name: Compilar demonstracao
+        run: python wmk-portugol/compilador.py wmk-portugol/exemplos/ola_mundo.por
+      - name: Conferir marcador e codigo GDScript
+        run: |
+          grep -q 'WMK_PORTUGOL_OK' wmk-portugol/exemplos/ola_mundo.gd
+          grep -q 'func _ready()' wmk-portugol/exemplos/ola_mundo.gd
