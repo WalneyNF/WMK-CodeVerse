@@ -1,0 +1,62 @@
+name: WMK - Homologar Language Kit
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - "wmk-language-kit/**"
+      - "wmk-portugol/**"
+      - ".github/workflows/wmk-language-kit-tests.yml"
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  language-kit-windows:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Testar transpiler Portugol
+        shell: pwsh
+        run: python -m unittest discover -s wmk-portugol -p "test_*.py" -v
+
+      - name: Recuperar binario WMK com GodotJS validado
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 43912110780
+          repository: ${{ github.repository }}
+          github-token: ${{ github.token }}
+          name: WMK-Godot-Five-Languages-Windows
+          path: editor
+
+      - name: Preparar projeto Godot de teste com plugin WMK
+        shell: pwsh
+        run: |
+          $p = Join-Path $env:RUNNER_TEMP 'WMK-Language-Kit-Test'
+          New-Item -ItemType Directory -Path $p -Force | Out-Null
+          Set-Content (Join-Path $p 'project.godot') 'config_version=5' -Encoding utf8
+          ./wmk-language-kit/instalar-wmk-language-kit.ps1 -Project $p -EnablePlugin
+          Write-Host "TEST_PROJECT=$p"
+
+      - name: Validar sintaxe e registro do plugin no editor WMK
+        shell: pwsh
+        run: |
+          $p = Join-Path $env:RUNNER_TEMP 'WMK-Language-Kit-Test'
+          $exe = @(Get-ChildItem editor -Filter '*.exe' | Where-Object { $_.Name -match 'editor' -and $_.Name -notmatch 'console' } | Select-Object -First 1)
+          if ($exe.Count -lt 1) { throw 'Editor nao encontrado' }
+          $log = & $exe[0].FullName --headless --editor --path $p --import 2>&1 | Out-String
+          $exit = $LASTEXITCODE
+          Write-Host "EDITOR_IMPORT_EXIT=$exit"
+          Write-Host $log
+          if ($log -match 'SCRIPT ERROR:|Parse Error:|Failed to load script|Cannot infer the type|Invalid assignment') {
+            throw 'Plugin WMK possui erro de sintaxe ou carregamento'
+          }
+          if ($exit -ne 0 -and $log -notmatch '\[\s*DONE\s*\].*first_scan_filesystem') {
+            throw "Importacao do projeto falhou, exit=$exit"
+          }
+          Write-Host 'WMK Language Kit: smoke test inicial passou. Interacao visual ainda nao foi testada.'
