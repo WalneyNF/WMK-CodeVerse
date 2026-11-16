@@ -13,6 +13,8 @@ Set-StrictMode -Version Latest
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) { throw "Git nao encontrado no PATH." }
 if (-not (Get-Command python -ErrorAction SilentlyContinue)) { throw "Python nao encontrado no PATH." }
 if (-not (Get-Command scons -ErrorAction SilentlyContinue)) { throw "SCons nao encontrado. Instale com: py -m pip install scons" }
+if (-not (Get-Command node -ErrorAction SilentlyContinue)) { throw "Node.js nao encontrado no PATH." }
+if (-not (Get-Command pnpm -ErrorAction SilentlyContinue)) { throw "pnpm nao encontrado. Instale via: npm install -g pnpm@10.11.0" }
 New-Item -ItemType Directory -Force -Path $WorkDir | Out-Null
 $GodotDir = Join-Path $WorkDir "godot"
 if (-not (Test-Path (Join-Path $GodotDir ".git"))) {
@@ -32,6 +34,8 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Falha ao buscar commit fixado do GodotJS." }
     git checkout --detach $ModuleRef
     if ($LASTEXITCODE -ne 0) { throw "Falha ao selecionar commit do GodotJS." }
+    git submodule update --init --recursive
+    if ($LASTEXITCODE -ne 0) { throw "Falha ao obter dependencias QuickJS-NG do GodotJS." }
 } finally { Pop-Location }
 Push-Location $GodotDir
 try {
@@ -40,7 +44,7 @@ try {
         throw "A integracao selecionada exige base Godot 4.6.x. Fonte atual nao compativel."
     }
     Write-Host "Compilando editor Godot com JavaScript e TypeScript (QuickJS)..."
-    scons platform=windows target=editor arch=x86_64 use_quickjs=yes use_typescript=yes -j $Jobs
+    scons platform=windows target=editor arch=x86_64 use_quickjs_ng=yes use_typescript=yes -j $Jobs
     if ($LASTEXITCODE -ne 0) { throw "SCons falhou. Leia as mensagens de compilacao acima." }
     Write-Host "Executaveis gerados em: $GodotDir/bin"
     Get-ChildItem "bin" -Filter "*.exe" | Select-Object FullName,Length
