@@ -60,3 +60,34 @@ jobs:
             throw "Importacao do projeto falhou, exit=$exit"
           }
           Write-Host 'WMK Language Kit: smoke test inicial passou. Interacao visual ainda nao foi testada.'
+
+      - name: Transpilar Portugol e executar a cena real no Godot
+        shell: pwsh
+        run: |
+          $p = Join-Path $env:RUNNER_TEMP 'WMK-Language-Kit-Test'
+          $por = @'
+          programa
+          funcao inicio()
+          {
+              escreva("WMK_PORTUGOL_OK")
+          }
+          '@
+          $por | Set-Content (Join-Path $p 'teste.por') -Encoding utf8
+          python (Join-Path $p 'tools/wmk-portugol.py') (Join-Path $p 'teste.por') -o (Join-Path $p 'teste.gd')
+          if ($LASTEXITCODE -ne 0) { throw 'Transpilacao Portugol falhou' }
+          @'
+          [gd_scene load_steps=2 format=3]
+          [ext_resource type="Script" path="res://teste.gd" id="1"]
+          [node name="WMK" type="Node2D"]
+          script = ExtResource("1")
+          '@ | Set-Content (Join-Path $p 'main.tscn') -Encoding utf8
+          Add-Content (Join-Path $p 'project.godot') 'run/main_scene="res://main.tscn"' -Encoding utf8
+          $exe = Get-ChildItem editor -Filter '*.exe' | Where-Object { $_.Name -match 'editor' -and $_.Name -notmatch 'console' } | Select-Object -First 1
+          $log = & $exe.FullName --headless --path $p --quit-after 8 2>&1 | Out-String
+          $exit = $LASTEXITCODE
+          Write-Host $log
+          if ($exit -ne 0 -or $log -notmatch 'WMK_PORTUGOL_OK' -or $log -match '(?m)^\s*(ERROR:|FATAL:)') {
+            throw "Cena Portugol/GDScript falhou (exit=$exit)"
+          }
+          Write-Host 'WMK Portugol: cena real aprovada.'
+
