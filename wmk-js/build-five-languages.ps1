@@ -1,6 +1,6 @@
 param(
     [string]$WorkDir = (Join-Path (Get-Location).Path "wmk-build"),
-    [string]$GodotRef = "4.6.1-stable",
+    [string]$GodotRef = "4.7.2-stable",
     [string]$GodotJSRef = "b1d8b3f4d4688d216657364ddc53db0813444411",
     [int]$Jobs = 2
 )
@@ -15,7 +15,7 @@ function Check([string]$step) {
 }
 @("git","python","scons","node","pnpm","dotnet") | ForEach-Object { Need $_ }
 New-Item -ItemType Directory -Force -Path $WorkDir | Out-Null
-$root = Join-Path $WorkDir "godot"
+$root = Join-Path $WorkDir "godot-4.7.2"
 if (-not (Test-Path (Join-Path $root ".git"))) {
     git clone --branch $GodotRef --depth 1 https://github.com/godotengine/godot.git $root
     Check "Clone Godot"
@@ -23,8 +23,8 @@ if (-not (Test-Path (Join-Path $root ".git"))) {
 Push-Location $root
 try {
     $version = Get-Content "version.py" -Raw
-    if ($version -notmatch 'major\s*=\s*4' -or $version -notmatch 'minor\s*=\s*6') {
-        throw "Base incompatível; exigido Godot 4.6.x"
+    if ($version -notmatch 'major\s*=\s*4' -or $version -notmatch 'minor\s*=\s*7' -or $version -notmatch 'patch\s*=\s*2') {
+        throw "Base incompativel; esperado Godot 4.7.2"
     }
     $mod = Join-Path $root "modules/GodotJS"
     if (-not (Test-Path (Join-Path $mod ".git"))) {
@@ -80,13 +80,13 @@ try {
 
     $output = Join-Path $WorkDir "WMK-Godot-Five-Languages"
     New-Item -ItemType Directory -Force -Path $output | Out-Null
-    Copy-Item $editor.FullName -Destination (Join-Path $output "WMK-CodeVerse-editor.exe") -Force
+    Copy-Item $editor.FullName -Destination (Join-Path $output "WMK-CodeVerse-4.7.2-editor.exe") -Force
     Copy-Item $assemblyDir -Destination (Join-Path $output "GodotSharp") -Force -Recurse
     Copy-Item (Join-Path $root "LICENSE.txt") -Destination (Join-Path $output "LICENSE-Godot.txt") -Force
     Copy-Item (Join-Path $root "AUTHORS.md") -Destination (Join-Path $output "AUTHORS-Godot.md") -Force
     Copy-Item $logo -Destination (Join-Path $output "WMK-CodeVerse-Logo.svg") -Force
     Set-Content (Join-Path $output "README-WMK.txt") -Encoding utf8 -Value @"
-WMK CODEVERSE - PREVIEW WINDOWS (distribuicao experimental)
+WMK CODEVERSE - PREVIEW 4.7.2 WINDOWS (migracao experimental; integracoes nao homologadas)
 GDScript: modulo do editor Godot
 C#: integrado ao build .NET e distribuido com GodotSharp
 JS: modulo GodotJS compilado com QuickJS-NG
