@@ -14,6 +14,17 @@ O **WMK CodeVerse** é um projeto comunitário e de código aberto baseado na [G
 
 > **Estado atual:** este repositório tem uma base histórica do **Godot 4.4 dev**. **A edição multilinguagem ainda não está validada como executável pronto.** As integrações experimentais devem ser testadas e compiladas antes de serem anunciadas como funcionais.
 
+## WMK CodeBot — Mascote e protagonista oficial
+
+<p align="center"><img src="branding/mascote/wmk-codebot-icon.svg" width="240" alt="Ícone vetorial simplificado do mascote WMK CodeBot"></p>
+
+O **WMK CodeBot** é o mascote e personagem principal da futura demonstração de jogo 3D do CodeVerse. Sua identidade visual é própria: robô branco/prata, violeta e ciano, com visor geométrico e símbolo de programação `</>`; **não é o mascote do Godot**.
+
+- **[Ficha oficial do mascote e roteiro para Blender + Codex/MCP](branding/mascote/README.md)**
+- **Arte principal e prancha de modelagem 3D:** duas imagens originais aprovadas; ainda precisam ser enviadas ao repositório como arquivos binários. O SVG acima é uma representação vetorial simplificada, não substitui essas referências completas.
+- **Idealização e direção do personagem:** Walney Moreira Klein — **walneyk@hotmail.com**.
+- **Próximo objetivo:** modelar no Blender, criar rig e exportar `.glb` para um personagem de terceira pessoa funcional com JavaScript.
+
 ## WMK PolyCode — Tecnologia de Integração e Extensibilidade
 
 **WMK PolyCode** é o nome dado à nossa proposta de arquitetura para investigar os mecanismos de extensão de softwares, conectar linguagens de programação, runtimes, APIs, servidores MCP e provedores de inteligência artificial por meio de adaptadores específicos.
