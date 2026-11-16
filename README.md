@@ -1,4 +1,4 @@
-<p align="center"><img src="branding/mascote/wmk-codebot-banner.png" width="100%" alt="WMK CodeVerse com o mascote oficial CodeBot"></p>
+
 
 # WMK CodeVerse
 
@@ -8,15 +8,13 @@ Projeto experimental baseado no Godot Engine para integração de GDScript, C#, 
 
 ## WMK CodeBot — Mascote oficial
 
-<p align="center"><img src="branding/mascote/wmk-codebot-arte-principal.png" width="540" alt="Mascote oficial CodeBot, robô futurista violeta e ciano"></p>
+
+
+**Imagens oficiais:** arquivos PNG aguardam envio para `branding/mascote/`. Não exibimos links de imagens ausentes.
 
 O CodeBot é o personagem de referência para nossos testes 3D, modelagem no Blender, rigging, animação e integração com jogos Godot.
 
-- [Banner do CodeVerse](branding/mascote/wmk-codebot-banner.png)
-- [Mascote oficial](branding/mascote/wmk-codebot-arte-principal.png)
-- [Guia visual de modelagem](branding/mascote/wmk-codebot-prancha-modelagem-3d.png)
 
-> **Atenção:** os três arquivos PNG ainda precisam ser enviados ao caminho indicado para que as imagens apareçam neste README.
 
 ## WMK-JS-Playground
 
