@@ -52,6 +52,17 @@ jobs:
           )
           foreach ($check in $checks) {
             $projectPath = Join-Path (Resolve-Path 'pacote').Path $check.Project
+            # A extensao Lua precisa ser carregada pelo editor durante a importacao,
+            # antes de executar uma cena referenciando arquivos .lua.
+            $importLog = & $exe[0].FullName --headless --editor --path $projectPath --import 2>&1 | Out-String
+            $importExit = $LASTEXITCODE
+            Write-Host "$($check.Name) IMPORT_EXIT=$importExit"
+            Write-Host $importLog
+            $importErrors = [bool]($importLog -match '(?m)^\s*(?:ERROR:|FATAL:)')
+            $importDone = [bool]($importLog -match '\[\s*DONE\s*\].*first_scan_filesystem')
+            if ($importErrors -or ($importExit -ne 0 -and -not $importDone)) {
+              throw "Importacao $($check.Name) falhou: exit=$importExit"
+            }
             $output = & $exe[0].FullName --headless --path $projectPath --quit-after 20 2>&1 | Out-String
             $exitCode = $LASTEXITCODE
             Write-Host "$($check.Name) EXIT=$exitCode"
