@@ -35,12 +35,22 @@ try {
     Copy-Item (Join-Path $addon.FullName "*") -Destination $dest -Recurse -Force
     $ext = @(Get-ChildItem $dest -Recurse -Filter "*.gdextension")
     if ($ext.Count -lt 1) { throw "Extensao Lua ausente no projeto final." }
+    # Verificar a biblioteca nativa: manifesto sozinho nao registra LuaScript.
+    $windowsDlls = @(Get-ChildItem $dest -Recurse -Filter "*.windows.template_debug.x86_64.dll")
+    if ($windowsDlls.Count -lt 1) {
+        throw "O pacote Lua nao contem DLL Windows x86_64 necessaria."
+    }
+    Write-Host "Manifesto Lua: $($ext[0].FullName)"
+    Write-Host "DLL Lua Windows: $($windowsDlls[0].FullName)"
     @'
 config_version=5
 
 [application]
 config/name="WMK Godot Lua Demo"
 run/main_scene="res://main.tscn"
+
+[editor_plugins]
+enabled=PackedStringArray("res://addons/lua-gdextension/plugin.cfg")
 '@ | Set-Content (Join-Path $projectDir "project.godot") -Encoding utf8
     @'
 [gd_scene load_steps=2 format=3]
