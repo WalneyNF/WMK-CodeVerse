@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="WMK CodeBot, mascote robô com visor hexagonal e símbolo de código">
+<title>WMK CodeBot — ícone vetorial simplificado</title>
+<desc>Versão vetorial estilizada do mascote aprovado. Conceito WMK CodeVerse. Walney Moreira Klein — walneyk@hotmail.com.</desc>
+<defs><linearGradient id="space" x2="1" y2="1"><stop stop-color="#131b3a"/><stop offset="1" stop-color="#060914"/></linearGradient>
+<linearGradient id="silver" x2="1" y2="1"><stop stop-color="#fff"/><stop offset=".5" stop-color="#bdcee8"/><stop offset="1" stop-color="#7784a5"/></linearGradient>
+<linearGradient id="violet" x2="0" y2="1"><stop stop-color="#aa70ff"/><stop offset="1" stop-color="#6420c1"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="8"/></filter></defs>
+<rect width="800" height="800" rx="140" fill="url(#space)"/>
+<ellipse cx="400" cy="700" rx="260" ry="47" fill="#41d9ff" opacity=".27" filter="url(#glow)"/>
+<path d="M280 456 L185 545 L163 703 L263 695 L302 561 Z" fill="#351170" stroke="#ab5cff" stroke-width="12"/>
+<path d="M235 495 L150 620 L178 678 L290 567" fill="#682be0" stroke="#6af5ff" stroke-width="7"/>
+<path d="M297 509 L262 675 L538 675 L506 509 Q400 457 297 509Z" fill="url(#silver)" stroke="#742cdb" stroke-width="17"/>
+<path d="M342 562 L334 644 L469 644 L461 562 Z" fill="#0b132d" stroke="#16dbfc" stroke-width="8"/>
+<text x="401" y="623" fill="#bdfcff" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="56">&lt;/&gt;</text>
+<path d="M253 551 L184 590 L150 697 L199 716 L288 627Z" fill="url(#silver)" stroke="#52219f" stroke-width="14"/>
+<path d="M546 552 L615 588 L644 699 L600 716 L509 629Z" fill="url(#silver)" stroke="#52219f" stroke-width="14"/>
+<rect x="132" y="677" width="83" height="67" rx="27" fill="#8235d1" stroke="#7cfaff" stroke-width="6"/>
+<rect x="582" y="679" width="83" height="67" rx="27" fill="#8235d1" stroke="#7cfaff" stroke-width="6"/>
+<path d="M238 194 L400 93 L560 194 L590 361 L497 487 L302 487 L207 361 Z" fill="#642bcc" stroke="#93f1ff" stroke-width="16"/>
+<path d="M261 209 L402 122 L539 210 L557 354 L483 457 L319 457 L240 354 Z" fill="url(#silver)" stroke="#4d186d" stroke-width="11"/>
+<path d="M279 230 L402 160 L520 230 L540 354 L469 435 L331 435 L259 354Z" fill="#070e28" stroke="#813afe" stroke-width="12"/>
+<ellipse cx="225" cy="337" rx="36" ry="76" fill="url(#violet)" stroke="#8af7ff" stroke-width="12"/>
+<ellipse cx="575" cy="337" rx="36" ry="76" fill="url(#violet)" stroke="#8af7ff" stroke-width="12"/>
+<circle cx="226" cy="340" r="23" fill="#49ebff" opacity=".8"/>
+<circle cx="574" cy="340" r="23" fill="#49ebff" opacity=".8"/>
+<g fill="none" stroke="#70eeff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
+<path d="M361 260 L321 300 L361 340"/><path d="M438 260 L478 300 L438 340"/><path d="M421 236 L385 365"/></g>
+<path d="M337 393 Q399 431 461 393" fill="none" stroke="#46f6ff" stroke-width="7" opacity=".75"/>
+<path d="M400 61 C540 20 650 125 654 239" fill="none" stroke="#a85aff" stroke-width="8" opacity=".8"/><circle cx="652" cy="239" r="13" fill="#39deff"/>
+</svg>
