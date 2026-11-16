@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="WMK PolyCode: proposta de arquitetura para conectar engines, linguagens, APIs, MCP e inteligência artificial.">
+<title>WMK PolyCode | Documento de visão e arquitetura</title>
+<style>
+:root{color-scheme:dark;--bg:#0c1020;--panel:#171e36;--line:#354061;--txt:#ecedff;--muted:#afb9d6;--purple:#a78bfa;--cyan:#67e8f9}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.65 system-ui,Segoe UI,Arial,sans-serif}
+header{padding:60px 22px 45px;background:linear-gradient(135deg,#151936,#292054 60%,#102a3b);border-bottom:1px solid var(--line)}
+main,header .inner,footer .inner{max-width:1020px;margin:auto}main{padding:25px 22px 70px}
+h1{font-size:clamp(2.1rem,5vw,3.6rem);line-height:1.13;margin:.3em 0}h2{margin:44px 0 16px;font-size:1.75rem;border-bottom:1px solid var(--line);padding-bottom:8px}h3{color:var(--cyan)}
+.tag{color:var(--cyan);text-transform:uppercase;letter-spacing:.18em;font-weight:700;font-size:.83rem}a{color:var(--cyan)}
+p,li{max-width:85ch}small,.muted{color:var(--muted)}.lead{font-size:1.25rem;color:#dad7ff;max-width:800px}
+.hero-credit{margin-top:25px;color:var(--muted)}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px;margin:22px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}.card strong{color:var(--purple)}.card h3{margin-top:0}
+pre{overflow:auto;white-space:pre;background:#10182d;border:1px solid var(--line);padding:20px;border-radius:12px;color:#dfecff;font:14px/1.65 Consolas,monospace}
+table{width:100%;border-collapse:collapse}th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--cyan)}
+.notice{border-left:4px solid var(--purple);background:var(--panel);padding:16px 20px;border-radius:0 10px 10px 0}
+nav{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}nav a{padding:8px 13px;border:1px solid var(--line);border-radius:20px;text-decoration:none}
+footer{background:#11162b;padding:25px 22px;border-top:1px solid var(--line)}.footer-text{color:var(--muted)}
+@media print{:root{color-scheme:light}body{background:white;color:#15151b}header{background:#f0effe;color:#15151b}.card,.notice{background:#f5f5fa;color:#15151b}pre{white-space:pre-wrap;color:#15151b;background:#eee}a{color:#38238d}}
+</style>
+</head>
+<body>
+<header><div class="inner">
+<div class="tag">WMK • Documento técnico e conceitual • 2026</div>
+<h1>WMK <span style="color:#c4b5fd">PolyCode</span></h1>
+<p class="lead">Tecnologia de Integração e Extensibilidade.<br>Conectando motores, linguagens e inteligência artificial.</p>
+<p class="hero-credit"><strong>Idealização e direção do conceito:</strong> Walney Moreira Klein<br>
+<strong>Contato:</strong> <a href="mailto:walneyk@hotmail.com">walneyk@hotmail.com</a><br>
+<strong>Projeto pioneiro:</strong> <a href="https://github.com/WalneyNF/WMK-CodeVerse">WMK CodeVerse</a></p>
+<nav aria-label="Navegação">
+<a href="#definicao">Definição</a><a href="#arquitetura">Arquitetura</a><a href="#godot">Primeiro caso</a>
+<a href="#roadmap">Roteiro</a><a href="#creditos">Créditos</a>
+</nav></div></header>
+<main>
+<section id="definicao">
+<h2>1. O que é WMK PolyCode?</h2>
+<p><strong>WMK PolyCode</strong> é o nome proposto para uma arquitetura e metodologia de integração de sistemas existentes com novas linguagens de programação, runtimes, APIs, protocolos de ferramentas como MCP e provedores de inteligência artificial.</p>
+<p>Seu princípio é analisar os pontos de extensão legítimos de uma aplicação, identificar as interfaces estáveis disponíveis e desenvolver <em>adaptadores</em> que conectem novas capacidades sem reconstruir o núcleo inteiro.</p>
+<div class="notice"><strong>Precisão técnica:</strong> este documento descreve uma visão arquitetural em desenvolvimento. Não existe, neste momento, um SDK universal WMK PolyCode validado em diferentes aplicações. O primeiro laboratório é o WMK CodeVerse, baseado no Godot.</div>
+</section>
+<section id="origem">
+<h2>2. Como nasceu a ideia?</h2>
+<p>O trabalho começou com um objetivo prático: incorporar outras linguagens de programação à Godot. O estudo do mecanismo de registro do GDScript, das APIs do motor C++ e das possibilidades de extensões revelou três necessidades diferentes: executar outras linguagens, acessar objetos do motor e integrar ferramentas externas.</p>
+<p>Daí surgiu uma proposta mais ampla: registrar o conhecimento de integração em uma camada documentada, testável e potencialmente reutilizável em outros softwares. O foco inclui o público brasileiro, com Portugol como linguagem educacional de destaque.</p>
+</section>
+<section id="arquitetura">
+<h2>3. Arquitetura de referência</h2>
+<pre aria-label="Diagrama arquitetural">
+               WMK POLYCODE — CAMADA DE INTEGRAÇÃO
+┌────────────────────────────────────────────────────────┐
+│ Experiência do usuário: editor, documentação, academia │
+├────────────────────────────────────────────────────────┤
+│ Linguagens       │ APIs e ferramentas │ IA e agentes   │
+│ Portugol         │ HTTP / WebSocket   │ Ollama         │
+│ GDScript, JS/TS  │ MCP cliente/servidor│ Groq           │
+│ Lua, C#, outras  │ Automação e testes  │ OpenAI, Gemini │
+├────────────────────────────────────────────────────────┤
+│ Contratos, permissões, adaptadores e testes de integração│
+└──────────────────────────┬─────────────────────────────┘
+                           │
+          ┌────────────────┼─────────────────┐
+          │                │                 │
+       Godot API      Blender API       Outros sistemas
+          │                │                 │
+       Núcleo C++     Núcleo próprio    Núcleo próprio
+</pre>
+<div class="cards">
+<div class="card"><h3>Linguagens</h3><p>Interpretação, compilação, transpilação e bindings: cada linguagem pode exigir um mecanismo diferente.</p></div>
+<div class="card"><h3>Ferramentas e MCP</h3><p>Descoberta e chamada de ferramentas por agentes, com permissões, limites e auditoria; MCP não é um runtime de linguagem.</p></div>
+<div class="card"><h3>Provedores de IA</h3><p>Cadastro, seleção de modelos, credenciais seguras e interfaces comuns; disponibilidade e custos dependem do provedor.</p></div>
+<div class="card"><h3>Adaptadores</h3><p>Um adaptador específico para cada aplicação: as APIs do Godot não são automaticamente iguais às do Blender ou de outro software.</p></div>
+</div>
+</section>
+<section id="godot">
+<h2>4. Primeiro caso de estudo: WMK CodeVerse</h2>
+<p>O <strong>WMK CodeVerse</strong> é uma iniciativa baseada na Godot Engine. O WMK PolyCode representa a visão de integração que orienta seus componentes, não um produto concorrente da engine.</p>
+<table><thead><tr><th>Elemento</th><th>Implementação/hipótese</th><th>Estado</th></tr></thead><tbody>
+<tr><td>GDScript</td><td>Runtime original do Godot</td><td>Disponível na base</td></tr>
+<tr><td>Portugol</td><td>Transpilador educacional .por → .gd</td><td>Protótipo publicado e testes Python aprovados; sem editor nativo</td></tr>
+<tr><td>C#</td><td>Módulo .NET Godot</td><td>Compilação experimental; validação integrada pendente</td></tr>
+<tr><td>JavaScript / TypeScript</td><td>GodotJS / QuickJS-NG</td><td>Compilação experimental; execução integrada pendente</td></tr>
+<tr><td>Lua</td><td>GDExtension por projeto</td><td>Teste de integração pendente</td></tr>
+<tr><td>IA</td><td>Clientes CLI para Ollama, Groq, OpenAI e Gemini</td><td>Arquivos iniciais publicados; painel integrado pendente</td></tr>
+<tr><td>MCP</td><td>Servidor local para leitura de projeto</td><td>Protótipo publicado; integração com editor pendente</td></tr>
+</tbody></table>
+<p>Links: <a href="../wmk-portugol/README.md">Portugol</a> · <a href="../wmk-ai/README.md">IA e MCP</a> · <a href="integrar-nova-linguagem.md">Integração de linguagens</a>.</p>
+</section>
+<section id="contratos">
+<h2>5. Componentes propostos do futuro SDK</h2>
+<ol>
+<li><strong>Host Adapter:</strong> identifica versão, APIs, permissões e ciclo de vida do software hospedeiro.</li>
+<li><strong>Language Adapter:</strong> controla runtime, carregamento de scripts, interoperabilidade e conversão de tipos.</li>
+<li><strong>AI Provider Registry:</strong> organiza provedores, modelos e configuração de endpoints; mantém segredos fora dos arquivos de projeto.</li>
+<li><strong>MCP Gateway:</strong> registra ferramentas permitidas e suas políticas de execução.</li>
+<li><strong>Capability Registry:</strong> declara ações acessíveis ao usuário e aos agentes; alterações exigem confirmação.</li>
+<li><strong>Test Harness:</strong> executa demonstrações reproduzíveis e verifica comportamento, falhas e compatibilidade.</li>
+</ol>
+<h3>Exemplo hipotético de contrato</h3>
+<pre>{
+  "adaptador": "godot",
+  "versao_api": "experimental-0.1",
+  "linguagem": "portugol",
+  "modo": "transpilacao",
+  "destino": "gdscript",
+  "capacidades": ["gerar_script", "validar_sintaxe"],
+  "modificacao_de_projeto": "somente_com_aprovacao"
+}</pre>
+<p><small>Esse JSON é ilustrativo e não corresponde a uma API já implementada.</small></p>
+</section>
+<section id="seguranca">
+<h2>6. Segurança, licenciamento e limitações</h2>
+<ul>
+<li>Dar preferência a código-fonte disponível, extensões documentadas e APIs autorizadas; não presumir acesso irrestrito a qualquer aplicativo.</li>
+<li>Isolar runtimes e restringir acesso a disco, rede e execução de processos quando possível.</li>
+<li>Exigir consentimento para ações de IA que escrevam, executem ou removam arquivos; registrar as operações.</li>
+<li>Guardar chaves de IA fora dos repositórios e arquivos de exportação de jogos.</li>
+<li>Preservar licenças, marcas e avisos de terceiros, incluindo os da Godot e das bibliotecas integradas.</li>
+<li>Não confundir protótipos de código com funcionalidades validadas ou com um produto final estável.</li>
+</ul>
+</section>
+<section id="roadmap">
+<h2>7. Roteiro de validação</h2>
+<ol>
+<li><strong>Fase 1 — Documentação:</strong> visão, contratos, arquitetura e inventário dos pontos de extensão Godot.</li>
+<li><strong>Fase 2 — Demonstração:</strong> Portugol → GDScript → cena 2D executada automaticamente no Godot.</li>
+<li><strong>Fase 3 — Linguagens:</strong> uma cena e testes automatizados para cada runtime ou binding incorporado.</li>
+<li><strong>Fase 4 — IA/MCP:</strong> interface de cadastro, permissões e assistência prática ao desenvolvimento.</li>
+<li><strong>Fase 5 — SDK:</strong> extrair contratos estáveis e demonstrar ao menos dois adaptadores de aplicações distintas.</li>
+<li><strong>Fase 6 — Distribuição:</strong> Windows ZIP experimental, instruções reproduzíveis, matriz de compatibilidade e releases.</li>
+</ol>
+</section>
+<section id="creditos">
+<h2>8. Autoria e créditos</h2>
+<p><strong>Nome da iniciativa:</strong> WMK PolyCode — Tecnologia de Integração e Extensibilidade.</p>
+<p><strong>Idealização, direção do projeto e identidade WMK:</strong> Walney Moreira Klein.<br>
+<strong>Contato:</strong> <a href="mailto:walneyk@hotmail.com">walneyk@hotmail.com</a>.<br>
+<strong>Primeiro projeto de aplicação:</strong> <a href="https://github.com/WalneyNF/WMK-CodeVerse">WMK CodeVerse</a>.</p>
+<p>O conceito reúne técnicas e mecanismos já conhecidos de engenharia de software (embeddings, bindings, runtimes, APIs, extensões e MCP). Seu nome e proposta de organização não implicam reivindicação da invenção dessas técnicas. Créditos e licenças dos projetos de terceiros devem ser mantidos.</p>
+<p class="muted">Documento conceitual inicial, 16 de novembro de 2026. Atualizar os estados conforme os testes e as implementações evoluírem.</p>
+</section>
+</main>
+<footer><div class="inner footer-text">WMK PolyCode • Walney Moreira Klein — walneyk@hotmail.com<br>Arquitetura aberta à pesquisa, experimentação e validação técnica.</div></footer>
+</body></html>
