@@ -45,19 +45,15 @@ exports.default = class _CLASS_ extends _BASE_ {
 }
 '@ | Set-Content $movement -Encoding UTF8
 $langCpp=Join-Path $godotjs 'weaver/jsb_script_language.cpp'
-$oldName=@'
-String GodotJSScriptLanguage::get_name() const
-{
-    return jsb_typename(GodotJSScript);
+$languageText = Get-Content $langCpp -Raw -Encoding UTF8
+$namePattern = '(?ms)String\s+GodotJSScriptLanguage::get_name\(\)\s+const\s*\{\s*return\s+jsb_typename\(GodotJSScript\);\s*\}'
+$nameMatches = [regex]::Matches($languageText, $namePattern)
+if ($nameMatches.Count -ne 1) {
+    throw "Patch nome JavaScript nao aplicado: esperada 1 ocorrencia, encontradas $($nameMatches.Count)"
 }
-'@
-$newName=@'
-String GodotJSScriptLanguage::get_name() const
-{
-    return "JavaScript (WMK)";
-}
-'@
-Replace-Required $langCpp $oldName.TrimEnd() $newName.TrimEnd()
+$nameReplacement = 'String GodotJSScriptLanguage::get_name() const { return "JavaScript (WMK)"; }'
+$languageText = [regex]::Replace($languageText, $namePattern, $nameReplacement)
+Set-Content -Path $langCpp -Value $languageText -Encoding UTF8 -NoNewline
 Copy-Item -LiteralPath $BrandLogo -Destination (Join-Path $EngineRoot 'editor/icons/Logo.svg') -Force
 foreach($name in @('icon.svg','icon_outlined.svg','logo.svg','logo_outlined.svg')) {
   Copy-Item -LiteralPath $BrandLogo -Destination (Join-Path $EngineRoot $name) -Force
