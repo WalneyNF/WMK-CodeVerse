@@ -12,6 +12,8 @@
 |---|---|---|
 | Integradores e desenvolvedores | [WMK PolyCode Academy: guia HTML](wmk-polycode-academy-integracoes.html) | Tutoriais Portugol, PHP, APIs, IA/MCP e bancos de dados |
 | Mantenedores | [Compilação reproduzível](compilacao-reproduzivel-wmk.md) | Comandos Windows, Actions, erros conhecidos, testes e publicação |
+| Programador avançado | [Construir runtime e bindings](wmk-polycode-runtime-sdk.md) | Parser, AST, VM, ScriptLanguage, segurança e testes |
+| Desenvolvedor web / jogos | [APIs de jogos e sites](wmk-polycode-api-jogos-web.md) | PHP, MySQL/MariaDB, Supabase, ranking, Godot e JavaScript |
 | Desenvolvedor e pesquisador | [WMK PolyCode — Documento técnico em HTML](wmk-polycode.html) | Conceito, arquitetura de extensibilidade, adaptadores, linguagens, APIs, IA/MCP, segurança e roteiro de validação |
 | Usuário iniciante | [Primeiros passos](primeiros-passos.md) | Conceitos, editor, projeto, cenas, nós, scripts e erros comuns |
 | Usuário e programador | [Guia de linguagens](guia-de-linguagens.md) | GDScript, C#, JS/TS, Lua, Python, C++, Rust e diferenças reais |
