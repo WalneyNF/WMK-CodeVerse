@@ -19,19 +19,13 @@ $copyrightNew='String(U"WMK CodeVerse — Walney Moreira Klein — walneyk@hotma
 Replace-Required $about $copyrightOld $copyrightNew
 $godotjs=Join-Path $EngineRoot 'modules/GodotJS'
 $header=Join-Path $godotjs 'weaver/jsb_script_language.h'
-$old=@'
-#if JSB_USE_TYPESCRIPT
-    virtual String get_extension() const override { return JSB_TYPESCRIPT_EXT; }
-#else
-    virtual String get_extension() const override { return JSB_JAVASCRIPT_EXT; }
-#endif
-'@
-$new=@'
-    // WMK: arquivos .js podem ser criados diretamente pelo assistente do editor.
-    // .ts continua reconhecido, mas requer transpilar usando tsc.
-    virtual String get_extension() const override { return JSB_JAVASCRIPT_EXT; }
-'@
-Replace-Required $header $old.TrimEnd() $new.TrimEnd()
+$headerText=Get-Content $header -Raw -Encoding UTF8
+$pattern='(?ms)#if\s+JSB_USE_TYPESCRIPT\s+virtual\s+String\s+get_extension\(\)\s+const\s+override\s*\{\s*return\s+JSB_TYPESCRIPT_EXT;\s*\}\s*#else\s+virtual\s+String\s+get_extension\(\)\s+const\s+override\s*\{\s*return\s+JSB_JAVASCRIPT_EXT;\s*\}\s*#endif'
+$matches=[regex]::Matches($headerText,$pattern)
+if ($matches.Count -ne 1) { throw "Patch get_extension nao aplicado: esperada 1 ocorrencia; encontradas $($matches.Count)." }
+$replacement='virtual String get_extension() const override { return JSB_JAVASCRIPT_EXT; }'
+$patched=[regex]::Replace($headerText,$pattern,$replacement)
+Set-Content $header -Value $patched -Encoding UTF8 -NoNewline
 $scsub=Join-Path $godotjs 'weaver-editor/templates/SCsub'
 Replace-Required $scsub 'language = "ts" if env["use_typescript"] else "js"' 'language = "js" # WMK: criar JavaScript nativo por padrao, TS permanece reconhecido'
 $movement=Join-Path $godotjs 'weaver-editor/templates/CharacterBody2D/basic_movement.js.cs'
