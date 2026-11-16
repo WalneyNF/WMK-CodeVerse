@@ -49,6 +49,13 @@ O guia **[Como integrar uma nova linguagem](manuais/integrar-nova-linguagem.md)*
 
 Além de exemplos, apresenta o que precisa funcionar para que uma linguagem possa ser considerada integrada: carregamento de scripts, nós, propriedades, sinais, erros, depuração, exportação e testes automatizados.
 
+## IA integrada, MCP e provedores (protótipo)
+
+O projeto já possui um servidor MCP de **somente leitura** e clientes CLI iniciais para **Ollama, Groq, OpenAI e Gemini**. **Ainda não há painel integrado ao editor nem validação de execução desses componentes.**
+
+- [Guia de instalação da IA e do servidor MCP](wmk-ai/README.md)
+- [Manual de arquitetura de IA e MCP](manuais/ia-mcp.md)
+
 ## 🇧🇷 Tradução pt-BR
 
 O README e os manuais WMK são escritos em português (Brasil). O **Godot já possui tradução da interface** e normalmente permite escolher o idioma nas configurações do editor; traduções de módulos de terceiros podem ser parciais. **A interface do fork ainda não foi auditada nem traduzida integralmente.**
