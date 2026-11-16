@@ -78,13 +78,7 @@ def compilar(codigo):
                 texto = f"if {expressao(m[1])}:"
                 iniciar = True
             elif linha == "senao":
-                if not pilha:
-                    raise ErroPortugol(f"Linha {numero}: senao sem bloco")
-                # senao faz parte da estrutura anterior, nao de uma nova funcao
-                nivel -= 1
-                pilha.pop()
-                texto = "else:"
-                iniciar = True
+                raise ErroPortugol(f"Linha {numero}: senao ainda nao implementado; utilize se")
             else:
                 m = re.fullmatch(r"enquanto\s*\((.+)\)", linha)
                 if m:
