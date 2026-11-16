@@ -76,7 +76,7 @@ func _create_script() -> void:
         _feedback("Nome invalido: use letras, numeros e _ (inicie por letra ou _).", true)
         return
     var index := language.selected
-    var ext := ["js", "gd", "por", "lua"][index]
+    var ext: String = ["js", "gd", "por", "lua"][index]
     var folder := "res://scripts"
     var result := DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
     if result != OK:
@@ -108,7 +108,7 @@ func _create_script() -> void:
     if index == 3 and not _has_lua_extension():
         _feedback("Lua criado. Instale a GDExtension Lua neste projeto antes de anexar.", true)
         return
-    var script := ResourceLoader.load(path, "Script", ResourceLoader.CACHE_MODE_IGNORE)
+    var script := ResourceLoader.load(path, "Script", ResourceLoader.CACHE_MODE_IGNORE) as Script
     if script == null:
         _feedback("Criado %s, mas nao foi reconhecido como Script. Confirme a integracao %s." % [path, ext], true)
         return
@@ -136,7 +136,7 @@ func _compile_portugol(path: String, node: Node) -> void:
         return
     get_editor_interface().get_resource_filesystem().scan()
     if attach_script.button_pressed and node != null and node.get_script() == null:
-        var converted := ResourceLoader.load(outpath, "Script", ResourceLoader.CACHE_MODE_IGNORE)
+        var converted := ResourceLoader.load(outpath, "Script", ResourceLoader.CACHE_MODE_IGNORE) as Script
         if converted != null:
             node.set_script(converted)
     _feedback("Portugol compilado para " + outpath + ". Salve a cena.", false)
