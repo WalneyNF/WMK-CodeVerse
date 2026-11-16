@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="branding/wmk-codeverse-icon.svg" width="180" alt="Logo oficial WMK CodeVerse">
+</p>
 
 <h1 align="center">WMK CodeVerse</h1>
 <p align="center"><strong>Uma engine. Sua linguagem. Seu universo.</strong></p>
