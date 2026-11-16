@@ -22,6 +22,12 @@
 | Usuários e desenvolvedores de IA | [IA e MCP](ia-mcp.md) | Provedores Ollama, Groq, OpenAI, Gemini e arquitetura MCP |
 | Mantenedor | [Validação e publicação](validacao-e-publicacao.md) | Matriz de testes, licenças, releases, segurança e critérios de pronto |
 
+## WMK CodeBot — Mascote oficial
+
+O mascote **WMK CodeBot** será o personagem principal do laboratório de terceira pessoa do CodeVerse. Já estão publicados seu [ícone vetorial simplificado](../branding/mascote/wmk-codebot-icon.svg) e sua [ficha para Blender / Codex + MCP](../branding/mascote/README.md). As duas artes originais geradas ainda precisam ser adicionadas como PNG binários ao repositório.
+
+**Direção:** Walney Moreira Klein — walneyk@hotmail.com.
+
 ## WMK PolyCode
 
 **WMK PolyCode** é a iniciativa de arquitetura proposta por **Walney Moreira Klein — walneyk@hotmail.com** para integrar novas linguagens, APIs, MCP e provedores de IA a softwares por meio de adaptadores. O WMK CodeVerse é seu primeiro laboratório. [Leia o documento HTML completo](wmk-polycode.html).
