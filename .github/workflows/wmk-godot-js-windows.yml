@@ -1,4 +1,4 @@
-name: WMK Godot JS TS - Windows
+name: WMK Godot - GDScript CSharp JS TS Lua
 on:
   workflow_dispatch:
   push:
@@ -11,45 +11,60 @@ permissions:
 jobs:
   windows-editor:
     runs-on: windows-latest
-    timeout-minutes: 300
+    timeout-minutes: 360
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Configurar Python
+      - name: Preparar Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Instalar SCons
-        shell: pwsh
-        run: python -m pip install "scons>=4.7,<5"
-      - name: Configurar Node.js
+      - name: Preparar .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Preparar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Configurar pnpm
+      - name: Preparar pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10.11.0
-      - name: Validar dependencias de compilacao
+      - name: Instalar SCons
+        shell: pwsh
+        run: python -m pip install "scons>=4.7,<5"
+      - name: Conferir ferramentas
         shell: pwsh
         run: |
+          python --version
+          dotnet --version
           node --version
           pnpm --version
           scons --version
-      - name: Compilar WMK Godot JS/TS (QuickJS)
+      - name: Compilar Godot com .NET JS e TS
         shell: pwsh
-        run: ./wmk-js/build-windows.ps1 -WorkDir "$env:RUNNER_TEMP/wmk-godot" -Jobs 2
-      - name: Verificar executavel
+        run: ./wmk-js/build-five-languages.ps1 -WorkDir "$env:RUNNER_TEMP/wmk-five-languages" -Jobs 2
+      - name: Adicionar Lua 5.4 no projeto-modelo
+        shell: pwsh
+        run: ./wmk-js/install-lua.ps1 -Distribution "$env:RUNNER_TEMP/wmk-five-languages/WMK-Godot-Five-Languages" -LuaVersion "0.8.2"
+      - name: Testar execucao Lua
         shell: pwsh
         run: |
-          $exe = Get-ChildItem "$env:RUNNER_TEMP/wmk-godot/godot/bin" -Filter "*editor*x86_64*.exe" | Where-Object { $_.Name -notmatch '\.console\.' } | Select-Object -First 1
-          if (-not $exe) { throw "Executavel do editor nao foi encontrado." }
-          & $exe.FullName --headless --version
-          if ($LASTEXITCODE -ne 0) { throw "Editor compilado falhou ao iniciar." }
-      - name: Publicar editor para download
+          $folder = "$env:RUNNER_TEMP/wmk-five-languages/WMK-Godot-Five-Languages"
+          $editor = Get-ChildItem $folder -Filter "*.exe" | Where-Object { $_.Name -match "editor" } | Select-Object -First 1
+          if (-not $editor) { throw "Editor nao foi gerado" }
+          $project = Join-Path $folder "WMK-Lua-Demo"
+          $output = & $editor.FullName --headless --path $project --quit-after 10 2>&1 | Out-String
+          Write-Host $output
+          if ($LASTEXITCODE -ne 0 -or $output -notmatch "WMK_LUA_54_OK") {
+            throw "Lua nao executou o script de teste."
+          }
+      - name: Publicar edicao WMK
         uses: actions/upload-artifact@v4
         with:
-          name: WMK-Godot-JS-TS-Windows
-          path: ${{ runner.temp }}/wmk-godot/godot/bin/*.exe
+          name: WMK-Godot-Five-Languages-Windows
+          path: ${{ runner.temp }}/wmk-five-languages/WMK-Godot-Five-Languages/
           if-no-files-found: error
+          retention-days: 14
