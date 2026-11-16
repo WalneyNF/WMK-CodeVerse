@@ -26,6 +26,19 @@ if ($matches.Count -ne 1) { throw "Patch get_extension nao aplicado: esperada 1 
 $replacement='virtual String get_extension() const override { return JSB_JAVASCRIPT_EXT; }'
 $patched=[regex]::Replace($headerText,$pattern,$replacement)
 Set-Content $header -Value $patched -Encoding UTF8 -NoNewline
+# Godot 4.7: Script::instance_has() deixou de ser virtual.
+# O GodotJS mantem sua implementacao interna, mas nao pode sobrescrever a API base.
+$scriptHeader = Join-Path $godotjs 'weaver/jsb_script.h'
+$scriptHeaderText = Get-Content $scriptHeader -Raw -Encoding UTF8
+$instancePattern = 'virtual\s+bool\s+instance_has\s*\(\s*const\s+Object\s*\*\s*p_this\s*\)\s+const\s+override\s*;'
+$instanceMatches = [regex]::Matches($scriptHeaderText, $instancePattern)
+if ($instanceMatches.Count -ne 1) {
+    throw "Patch de compatibilidade Godot 4.7 instance_has: esperada 1 declaracao, encontradas $($instanceMatches.Count)"
+}
+$scriptHeaderText = [regex]::Replace($scriptHeaderText, $instancePattern, 'bool instance_has(const Object* p_this) const;')
+Set-Content -Path $scriptHeader -Value $scriptHeaderText -Encoding UTF8 -NoNewline
+Write-Host "Compatibilidade 4.7: instance_has corrigido para API nao virtual."
+
 $scsub=Join-Path $godotjs 'weaver-editor/templates/SCsub'
 Replace-Required $scsub 'language = "ts" if env["use_typescript"] else "js"' 'language = "js" # WMK: criar JavaScript nativo por padrao, TS permanece reconhecido'
 $movement=Join-Path $godotjs 'weaver-editor/templates/CharacterBody2D/basic_movement.js.cs'
