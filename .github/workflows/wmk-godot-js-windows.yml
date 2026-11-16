@@ -49,12 +49,21 @@ jobs:
       - name: Testar JavaScript com cena real
         shell: pwsh
         run: ./wmk-js/test-js.ps1 -Distribution "$env:RUNNER_TEMP/wmk-five-languages/WMK-Godot-Five-Languages"
+      - name: Testar Playground JS 2D e 3D
+        shell: pwsh
+        run: ./wmk-js/test-playground.ps1 -Distribution "$env:RUNNER_TEMP/wmk-five-languages/WMK-Godot-Five-Languages"
       - name: Adicionar Lua 5.4 no projeto-modelo
         shell: pwsh
         run: ./wmk-js/install-lua.ps1 -Distribution "$env:RUNNER_TEMP/wmk-five-languages/WMK-Godot-Five-Languages" -LuaVersion "0.8.2"
       - name: Testar execucao Lua com diagnosticos e cena real
         shell: pwsh
         run: ./wmk-js/test-lua.ps1 -Distribution "$env:RUNNER_TEMP/wmk-five-languages/WMK-Godot-Five-Languages"
+      - name: Copiar exemplos Playground para distribuicao
+        if: ${{ success() || failure() }}
+        shell: pwsh
+        run: |
+          $dest = "$env:RUNNER_TEMP/wmk-five-languages/WMK-Godot-Five-Languages"
+          if (Test-Path $dest) { Copy-Item "./wmk-js/playground" (Join-Path $dest "WMK-JS-Playground") -Recurse -Force }
       - name: Publicar edicao WMK mesmo se testes falharem
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
