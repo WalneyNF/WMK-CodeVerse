@@ -50,6 +50,8 @@ Toda a documentação WMK começa em **[Biblioteca de Manuais](manuais/README.md
 
 | Manual | Para quem | O que ensina |
 | --- | --- | --- |
+| **[WMK PolyCode Academy — linguagens, PHP, IA e bancos (HTML)](manuais/wmk-polycode-academy-integracoes.html)** | Integradores e desenvolvedores | Passo a passo de Portugol, PHP externo, runtime, agentes, MCP e acesso seguro a dados |
+| **[Compilação reproduzível e erros conhecidos](manuais/compilacao-reproduzivel-wmk.md)** | Mantenedores e contribuidores | Dependências, build Windows, GitHub Actions, diagnóstico e critérios de validação |
 | **[WMK PolyCode — arquitetura e visão (HTML)](manuais/wmk-polycode.html)** | Desenvolvedores e pesquisadores | Extensibilidade, linguagens, runtimes, APIs, MCP, IA, adaptadores, segurança e roadmap |
 | **[WMK Portugol — programar em português](wmk-portugol/README.md)** | Iniciantes, professores e programadores | Sintaxe, conversão para GDScript, exemplos e testes |
 | **[Primeiros passos](manuais/primeiros-passos.md)** | Iniciantes e usuários | Editor, projetos, cenas, nós, scripts, primeiro exemplo |
