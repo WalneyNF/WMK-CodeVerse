@@ -1,0 +1,59 @@
+name: WMK - Publicar Preview Windows
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - ".github/workflows/wmk-publicar-preview.yml"
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  release-preview:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Baixar artefato Windows validado
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 43905108907
+          repository: ${{ github.repository }}
+          github-token: ${{ github.token }}
+          name: WMK-Godot-Five-Languages-Windows
+          path: pacote
+
+      - name: Validar executavel e distribuicao
+        shell: pwsh
+        run: |
+          $exe = @(Get-ChildItem pacote -Recurse -Filter '*editor*.exe' | Where-Object { $_.Name -notmatch 'console' } | Select-Object -First 1)
+          if ($exe.Count -lt 1) { throw 'Nao foi encontrado executavel do editor' }
+          if (!(Test-Path pacote/GodotSharp/Api)) { throw 'GodotSharp/Api ausente' }
+          if (!(Test-Path pacote/GodotSharp/Tools)) { throw 'GodotSharp/Tools ausente' }
+          if (!(Test-Path pacote/WMK-JS-Demo/project.godot)) { throw 'Demo JS ausente' }
+          if (!(Test-Path pacote/WMK-Lua-Demo/project.godot)) { throw 'Demo Lua ausente' }
+          & $exe[0].FullName --headless --version
+          if ($LASTEXITCODE -ne 0) { throw 'Editor nao inicializou em modo headless' }
+
+      - name: Empacotar ZIP
+        shell: pwsh
+        run: |
+          Compress-Archive -Path 'pacote/*' -DestinationPath 'WMK-CodeVerse-Windows-Preview.zip' -CompressionLevel Optimal
+          Get-FileHash 'WMK-CodeVerse-Windows-Preview.zip' -Algorithm SHA256
+
+      - name: Publicar GitHub Release experimental
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v0.1.0-windows-preview
+          RUN_ID: 43905108907
+        shell: pwsh
+        run: |
+          $repo = $env:GITHUB_REPOSITORY
+          $notes = "Primeira versao experimental Windows x64. Compilacao aprovada: https://github.com/$repo/actions/runs/$env:RUN_ID . Testes automatizados de inicializacao do editor, JavaScript e Lua aprovados. Testes visuais de usuarios ainda pendentes. Manual: https://github.com/$repo/blob/master/manuais/testar-codeverse-windows.html ."
+          gh release view $env:TAG --repo $repo *> $null
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "Release ja existe; nao vamos sobrescrever o ZIP automaticamente."
+            exit 0
+          }
+          gh release create $env:TAG 'WMK-CodeVerse-Windows-Preview.zip' --repo $repo --target 3fa81fc61124adfd1f6d272f2dd0379c7140fe8d --prerelease --title "WMK CodeVerse - Windows Preview v0.1.0" --notes $notes
