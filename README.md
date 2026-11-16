@@ -16,8 +16,11 @@ O **WMK CodeVerse** é um projeto comunitário e de código aberto baseado na [G
 
 ## Linguagens e possibilidades
 
+**🇧🇷 Destaque: Portugol aparece primeiro!** Nossa proposta educacional permite escrever um subconjunto de comandos em português e convertê-los em GDScript. Ainda não significa que arquivos `.por` sejam executados diretamente pelo editor.
+
 | Linguagem | Tecnologia de integração | Estado no projeto |
 | --- | --- | --- |
+| **Portugol 🇧🇷** | [WMK Portugol](wmk-portugol/README.md): transpilador educacional para GDScript | Primeira versão publicada; testes Python aprovados; integração nativa ao editor pendente |
 | **GDScript** | Sistema de scripts padrão Godot | Disponível na base |
 | **C#** | Godot .NET / módulo Mono | Suporte existente no ecossistema Godot; build WMK pendente |
 | **JavaScript** | [GodotJS](https://github.com/godotjs/GodotJS) | Integração experimental |
@@ -35,6 +38,7 @@ Toda a documentação WMK começa em **[Biblioteca de Manuais](manuais/README.md
 
 | Manual | Para quem | O que ensina |
 | --- | --- | --- |
+| **[WMK Portugol — programar em português](wmk-portugol/README.md)** | Iniciantes, professores e programadores | Sintaxe, conversão para GDScript, exemplos e testes |
 | **[Primeiros passos](manuais/primeiros-passos.md)** | Iniciantes e usuários | Editor, projetos, cenas, nós, scripts, primeiro exemplo |
 | **[Guia de linguagens](manuais/guia-de-linguagens.md)** | Programadores | Diferenças entre GDScript, C#, JS, TS, Lua, C++, Rust e Python |
 | **[Integrar uma nova linguagem](manuais/integrar-nova-linguagem.md)** | Desenvolvedores da engine | `ScriptLanguage`, módulos, GDExtension, bindings, runtime, testes |
