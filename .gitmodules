@@ -1,0 +1,3 @@
+[submodule "modules/GodotJS"]
+	path = modules/GodotJS
+	url = https://github.com/WalneyNF/GodotJS.git
