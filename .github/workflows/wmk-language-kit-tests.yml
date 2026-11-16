@@ -81,6 +81,7 @@ jobs:
           [node name="WMK" type="Node2D"]
           script = ExtResource("1")
           '@ | Set-Content (Join-Path $p 'main.tscn') -Encoding utf8
+          Add-Content (Join-Path $p 'project.godot') "`n[application]" -Encoding utf8
           Add-Content (Join-Path $p 'project.godot') 'run/main_scene="res://main.tscn"' -Encoding utf8
           $exe = Get-ChildItem editor -Filter '*.exe' | Where-Object { $_.Name -match 'editor' -and $_.Name -notmatch 'console' } | Select-Object -First 1
           $log = & $exe.FullName --headless --path $p --quit-after 8 2>&1 | Out-String
