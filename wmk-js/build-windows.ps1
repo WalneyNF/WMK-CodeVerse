@@ -40,7 +40,7 @@ try {
         throw "A integracao selecionada exige base Godot 4.6.x. Fonte atual nao compativel."
     }
     Write-Host "Compilando editor Godot com JavaScript e TypeScript (QuickJS)..."
-    scons platform=windows target=editor arch=x86_64 use_quickjs=yes use_typescript=yes "num_jobs=$Jobs"
+    scons platform=windows target=editor arch=x86_64 use_quickjs=yes use_typescript=yes -j $Jobs
     if ($LASTEXITCODE -ne 0) { throw "SCons falhou. Leia as mensagens de compilacao acima." }
     Write-Host "Executaveis gerados em: $GodotDir/bin"
     Get-ChildItem "bin" -Filter "*.exe" | Select-Object FullName,Length
