@@ -46,6 +46,9 @@ jobs:
       - name: Compilar Godot com .NET JS e TS
         shell: pwsh
         run: ./wmk-js/build-five-languages.ps1 -WorkDir "$env:RUNNER_TEMP/wmk-five-languages" -Jobs 2
+      - name: Testar JavaScript com cena real
+        shell: pwsh
+        run: ./wmk-js/test-js.ps1 -Distribution "$env:RUNNER_TEMP/wmk-five-languages/WMK-Godot-Five-Languages"
       - name: Adicionar Lua 5.4 no projeto-modelo
         shell: pwsh
         run: ./wmk-js/install-lua.ps1 -Distribution "$env:RUNNER_TEMP/wmk-five-languages/WMK-Godot-Five-Languages" -LuaVersion "0.8.2"
@@ -56,9 +59,12 @@ jobs:
           $editor = Get-ChildItem $folder -Filter "*.exe" | Where-Object { $_.Name -match "editor" } | Select-Object -First 1
           if (-not $editor) { throw "Editor nao foi gerado" }
           $project = Join-Path $folder "WMK-Lua-Demo"
+          $importOutput = & $editor.FullName --headless --editor --path $project --import 2>&1 | Out-String
+          Write-Host $importOutput
+          if ($LASTEXITCODE -ne 0 -or $importOutput -match 'ERROR:|FATAL:') { throw "Falha ao importar plugin Lua." }
           $output = & $editor.FullName --headless --path $project --quit-after 10 2>&1 | Out-String
           Write-Host $output
-          if ($LASTEXITCODE -ne 0 -or $output -notmatch "WMK_LUA_54_OK") {
+          if ($LASTEXITCODE -ne 0 -or $output -notmatch "WMK_LUA_54_OK" -or $output -match "ERROR:|FATAL:") {
             throw "Lua nao executou o script de teste."
           }
       - name: Publicar edicao WMK
