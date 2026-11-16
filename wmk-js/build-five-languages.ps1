@@ -42,6 +42,20 @@ try {
         if (-not (Test-Path "quickjs-ng/quickjs.c")) { throw "QuickJS-NG incompleto" }
     } finally { Pop-Location }
 
+    # WMK: identidade visual, nome do editor, Sobre e criacao de .js
+    $branding = Join-Path $PSScriptRoot "apply-wmk-branding.ps1"
+    $logo = (Resolve-Path (Join-Path $PSScriptRoot "../branding/wmk-codeverse-icon.svg")).Path
+    & $branding -EngineRoot $root -BrandLogo $logo
+
+    # PNG e ICO gerados a partir da logo oficial com sharp (Node.js).
+    $brandDeps = Join-Path $WorkDir "brand-tools"
+    New-Item -ItemType Directory -Force -Path $brandDeps | Out-Null
+    npm install --prefix $brandDeps --no-save --no-package-lock sharp@0.34.5
+    Check "Instalar conversor de SVG"
+    $env:NODE_PATH = Join-Path $brandDeps "node_modules"
+    node (Join-Path $PSScriptRoot "brand-assets.cjs") $root $logo
+    Check "Gerar icones WMK, splash e recursos Windows"
+
     # JS/TS: GodotJS; C#: Godot .NET; GDScript: modulo original.
     # QuickJS-NG evita bibliotecas V8 pre-compiladas.
     scons platform=windows target=editor arch=x86_64 module_mono_enabled=yes use_quickjs_ng=yes use_typescript=yes d3d12=no -j $Jobs
@@ -66,14 +80,20 @@ try {
 
     $output = Join-Path $WorkDir "WMK-Godot-Five-Languages"
     New-Item -ItemType Directory -Force -Path $output | Out-Null
-    Copy-Item $editor.FullName -Destination $output -Force
+    Copy-Item $editor.FullName -Destination (Join-Path $output "WMK-CodeVerse-editor.exe") -Force
     Copy-Item $assemblyDir -Destination (Join-Path $output "GodotSharp") -Force -Recurse
+    Copy-Item (Join-Path $root "LICENSE.txt") -Destination (Join-Path $output "LICENSE-Godot.txt") -Force
+    Copy-Item (Join-Path $root "AUTHORS.md") -Destination (Join-Path $output "AUTHORS-Godot.md") -Force
+    Copy-Item $logo -Destination (Join-Path $output "WMK-CodeVerse-Logo.svg") -Force
     Set-Content (Join-Path $output "README-WMK.txt") -Encoding utf8 -Value @"
-WMK GODOT - CINCO LINGUAGENS (distribuicao de testes)
+WMK CODEVERSE - PREVIEW WINDOWS (distribuicao experimental)
 GDScript: modulo do editor Godot
 C#: integrado ao build .NET e distribuido com GodotSharp
 JS: modulo GodotJS compilado com QuickJS-NG
-TS: ferramenta GodotJS habilitada, requer compilacao TS por projeto
+TS: reconhecido pelo GodotJS, requer compilacao TS com tsc por projeto
+JS: extensao .js prioritaria no assistente nativo apos o patch WMK
+Branding: logo, splash, About e exe WMK-CodeVerse-editor.exe
+Licencas: original Godot MIT em LICENSE-Godot.txt, autores em AUTHORS-Godot.md
 Lua 5.4: extensao GDExtension no projeto-modelo; NAO integrada ao binario.
 Autor: Walney Moreira Klein - walneyk@hotmail.com
 "@

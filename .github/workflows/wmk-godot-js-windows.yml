@@ -5,9 +5,12 @@ on:
     branches: [wmk-js-ts-integration]
     paths:
       - "wmk-js/**"
+      - "wmk-language-kit/**"
+      - "wmk-portugol/**"
+      - "branding/**"
       - ".github/workflows/wmk-godot-js-windows.yml"
 permissions:
-  contents: read
+  contents: write
 jobs:
   windows-editor:
     runs-on: windows-latest
@@ -64,6 +67,16 @@ jobs:
         run: |
           $dest = "$env:RUNNER_TEMP/wmk-five-languages/WMK-Godot-Five-Languages"
           if (Test-Path $dest) { Copy-Item "./wmk-js/playground" (Join-Path $dest "WMK-JS-Playground") -Recurse -Force }
+      - name: Copiar instalador de linguagens WMK e manuais
+        if: ${{ success() || failure() }}
+        shell: pwsh
+        run: |
+          $dest = "$env:RUNNER_TEMP/wmk-five-languages/WMK-Godot-Five-Languages"
+          if (Test-Path $dest) {
+            Copy-Item "./wmk-language-kit" (Join-Path $dest "WMK-Language-Kit") -Recurse -Force
+            Copy-Item "./wmk-portugol" (Join-Path $dest "WMK-Portugol") -Recurse -Force
+          }
+
       - name: Publicar edicao WMK mesmo se testes falharem
         if: ${{ always() }}
         uses: actions/upload-artifact@v4

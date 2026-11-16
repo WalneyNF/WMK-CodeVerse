@@ -1,38 +1,29 @@
-<p align="center">
-  <img src="branding/wmk-codeverse-icon.svg" width="180" alt="Logo oficial WMK CodeVerse">
-</p>
+# WMK CodeVerse — Windows Preview
 
-# WMK CodeVerse
+**Identidade própria WMK | baseado na Godot Engine 4.6.1 + GodotJS**
 
-**Uma engine. Sua linguagem. Seu universo.**
+**Personalização:** Walney Moreira Klein — walneyk@hotmail.com.
 
-Projeto experimental baseado no Godot Engine para integração de GDScript, C#, JavaScript, TypeScript e Lua no desenvolvimento de jogos.
+Esta edição passa a gerar `WMK-CodeVerse-editor.exe`, com logo, splash, ícone e texto de personalização em **Sobre**. Permanecem os créditos históricos, autores e licença MIT do Godot. A marca WMK não deve sugerir que esta edição é oficial da Godot Foundation.
 
-## WMK CodeBot — Mascote oficial
+## Linguagens
 
+- GDScript: nativa.
+- C#: .NET compilado no editor; testes de jogos C# ainda necessários.
+- JavaScript: suporte nativo GodotJS; o patch WMK altera a extensão sugerida pelo assistente para `.js`.
+- TypeScript: suporte GodotJS; arquivos `.ts` exigem compilação com `tsc` no projeto.
+- Lua: GDExtension distribuída em projeto de demonstração; não é uma linguagem global.
+- Portugol: transpilação educacional `.por` para `.gd` por um compilador Python; não é uma ScriptLanguage global.
 
+Para testar criação de código use a opção JS padrão ou instale o `WMK-Language-Kit` fornecido no pacote.
 
-**Imagens oficiais:** arquivos PNG aguardam envio para `branding/mascote/`. Não exibimos links de imagens ausentes.
+## Testes e downloads
 
-O CodeBot é o personagem de referência para nossos testes 3D, modelagem no Blender, rigging, animação e integração com jogos Godot.
+Os testes JS 2D/3D e Lua são realizados no workflow Windows. **Build verde não significa que todos os recursos foram homologados visualmente.**
 
+- [GitHub Actions](https://github.com/WalneyNF/WMK-CodeVerse/actions/workflows/wmk-godot-js-windows.yml)
+- [Releases](https://github.com/WalneyNF/WMK-CodeVerse/releases)
+- [Manual do Language Kit](wmk-language-kit/README.md)
+- [Manual de compilação e integração](wmk-js/README.md)
 
-
-## WMK-JS-Playground
-
-Criamos projetos de demonstração em JavaScript, com movimentação 2D e 3D, scripts de teste e arquivos `project.godot`.
-
-- [Projetos JavaScript 2D e 3D](wmk-js/playground/README.md)
-- [Instruções de compilação](wmk-js/README.md)
-- [Compilações Windows](https://github.com/WalneyNF/WMK-CodeVerse/actions/workflows/wmk-godot-js-windows.yml)
-
-**Estado atual:** em testes. JavaScript já executou uma cena básica em compilação anterior, mas o pacote completo ainda não está validado.
-
-## Créditos e licenças
-
-**Idealização e personalização:** Walney Moreira Klein — walneyk@hotmail.com.
-
-Baseado no [Godot Engine](https://godotengine.org/), sob licença MIT. O projeto é independente da Godot Foundation. Preservam-se os créditos e licenças originais.
-
-- [Licença do repositório](LICENSE.txt)
-- [Projeto original](https://github.com/godotengine/godot)
+**ATENÇÃO:** a publicação de Releases exige permissão `Contents: Read and write` do GitHub Actions nas configurações do repositório. Se o GitHub responder HTTP 403, o ZIP continuará disponível nos Artifacts.
