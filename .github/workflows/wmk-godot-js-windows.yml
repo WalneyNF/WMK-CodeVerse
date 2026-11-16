@@ -1,0 +1,41 @@
+name: WMK Godot JS TS - Windows
+on:
+  workflow_dispatch:
+  push:
+    branches: [wmk-js-ts-integration]
+    paths:
+      - "wmk-js/**"
+      - ".github/workflows/wmk-godot-js-windows.yml"
+permissions:
+  contents: read
+jobs:
+  windows-editor:
+    runs-on: windows-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Instalar SCons
+        shell: pwsh
+        run: python -m pip install "scons>=4.7,<5"
+      - name: Compilar WMK Godot JS/TS (QuickJS)
+        shell: pwsh
+        run: ./wmk-js/build-windows.ps1 -WorkDir "$env:RUNNER_TEMP/wmk-godot" -Jobs 2
+      - name: Verificar executavel
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem "$env:RUNNER_TEMP/wmk-godot/godot/bin" -Filter "*editor*x86_64*.exe" | Select-Object -First 1
+          if (-not $exe) { throw "Executavel do editor nao foi encontrado." }
+          & $exe.FullName --headless --version
+          if ($LASTEXITCODE -ne 0) { throw "Editor compilado falhou ao iniciar." }
+      - name: Publicar editor para download
+        uses: actions/upload-artifact@v4
+        with:
+          name: WMK-Godot-JS-TS-Windows
+          path: ${{ runner.temp }}/wmk-godot/godot/bin/*.exe
+          if-no-files-found: error
