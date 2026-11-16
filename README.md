@@ -15,6 +15,15 @@ O **WMK CodeVerse** é um projeto comunitário e de código aberto baseado na [G
 
 > **Estado atual:** este repositório tem uma base histórica do **Godot 4.4 dev**. **A edição multilinguagem ainda não está validada como executável pronto.** As integrações experimentais devem ser testadas e compiladas antes de serem anunciadas como funcionais.
 
+## WMK CodeVerse Studio — editor de códigos e IA
+
+O **[WMK CodeVerse Studio](wmk-studio/README.md)** é um aplicativo local HTML/CSS/JavaScript para organizar códigos 2D/3D em uma biblioteca JSON, editar com Monaco, usar templates e consultar o agente CodeBot por Groq, OpenAI, Gemini ou Ollama. As credenciais ficam no arquivo local `.env`, nunca no README nem no navegador.
+
+- **[Abrir código do Studio](wmk-studio/)**
+- **[Manual completo de instalação e uso (pt-BR)](wmk-studio/README.md)**
+- Iniciar no Windows: `wmk-studio/iniciar-windows.bat`; endereço local `http://127.0.0.1:4178`.
+- Requer Node.js 20+. O Monaco via CDN necessita de internet; existe editor de texto alternativo.
+
 ## WMK CodeBot — Mascote e protagonista oficial
 
 
