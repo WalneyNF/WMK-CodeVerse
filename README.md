@@ -1,78 +1,76 @@
-# Godot Engine
-
 <p align="center">
-  <a href="https://godotengine.org">
-    <img src="logo_outlined.svg" width="400" alt="Godot Engine logo">
-  </a>
+  <img src="branding/wmk-codeverse-icon.svg" width="220" alt="Emblema WMK CodeVerse, símbolo universal de código no interior de um hexágono">
 </p>
+<h1 align="center">WMK CodeVerse</h1>
+<p align="center"><strong>Uma engine. Sua linguagem. Seu universo.</strong></p>
+<p align="center"><em>One Engine. Your Language. Your Universe.</em></p>
+<p align="center">Projeto aberto para ampliar as possibilidades de programação na Godot Engine.</p>
 
-## 2D and 3D cross-platform game engine
+---
 
-**[Godot Engine](https://godotengine.org) is a feature-packed, cross-platform
-game engine to create 2D and 3D games from a unified interface.** It provides a
-comprehensive set of [common tools](https://godotengine.org/features), so that
-users can focus on making games without having to reinvent the wheel. Games can
-be exported with one click to a number of platforms, including the major desktop
-platforms (Linux, macOS, Windows), mobile platforms (Android, iOS), as well as
-Web-based platforms and [consoles](https://docs.godotengine.org/en/latest/tutorials/platform/consoles.html).
+## O que é o WMK CodeVerse?
 
-## Free, open source and community-driven
+O **WMK CodeVerse** é um projeto comunitário e de código aberto baseado na [Godot Engine](https://godotengine.org/). Sua proposta é permitir que desenvolvedores criem jogos utilizando a linguagem com a qual se sentem mais produtivos, aproveitando o mesmo editor visual, nós, cenas, animação, física e renderização.
 
-Godot is completely free and open source under the very permissive [MIT license](https://godotengine.org/license).
-No strings attached, no royalties, nothing. The users' games are theirs, down
-to the last line of engine code. Godot's development is fully independent and
-community-driven, empowering users to help shape their engine to match their
-expectations. It is supported by the [Godot Foundation](https://godot.foundation/)
-not-for-profit.
+> **Estado atual:** este repositório tem uma base histórica do **Godot 4.4 dev**. **A edição multilinguagem ainda não está validada como executável pronto.** As integrações experimentais devem ser testadas e compiladas antes de serem anunciadas como funcionais.
 
-Before being open sourced in [February 2014](https://github.com/godotengine/godot/commit/0b806ee0fc9097fa7bda7ac0109191c9c5e0a1ac),
-Godot had been developed by [Juan Linietsky](https://github.com/reduz) and
-[Ariel Manzur](https://github.com/punto-) (both still maintaining the project)
-for several years as an in-house engine, used to publish several work-for-hire
-titles.
+## Linguagens e possibilidades
 
-![Screenshot of a 3D scene in the Godot Engine editor](https://raw.githubusercontent.com/godotengine/godot-design/master/screenshots/editor_tps_demo_1920x1080.jpg)
+| Linguagem | Tecnologia de integração | Estado no projeto |
+| --- | --- | --- |
+| **GDScript** | Sistema de scripts padrão Godot | Disponível na base |
+| **C#** | Godot .NET / módulo Mono | Suporte existente no ecossistema Godot; build WMK pendente |
+| **JavaScript** | [GodotJS](https://github.com/godotjs/GodotJS) | Integração experimental |
+| **TypeScript** | GodotJS + compilação TS para JS | Integração experimental |
+| **Lua** | Lua GDExtension | Integração experimental por projeto |
+| **C++** | Módulos C++ ou [godot-cpp/GDExtension](https://github.com/godotengine/godot-cpp) | Caminho existente para código nativo |
+| **Rust** | [godot-rust/gdext](https://github.com/godot-rust/gdext) | Possibilidade futura |
+| **Python** | Binding comunitário, como [py4godot](https://github.com/niklas2902/py4godot) | Possibilidade futura |
 
-## Getting the engine
+**Importante:** linguagens compiladas como C++ e Rust normalmente utilizam bibliotecas nativas. Não é necessário reescrever a física, os nós e a renderização em cada linguagem; são necessárias pontes (bindings) entre o runtime e a API do Godot.
 
-### Binary downloads
+## 📚 Manuais em português (Brasil)
 
-Official binaries for the Godot editor and the export templates can be found
-[on the Godot website](https://godotengine.org/download).
+Toda a documentação WMK começa em **[Biblioteca de Manuais](manuais/README.md)**.
 
-### Compiling from source
+| Manual | Para quem | O que ensina |
+| --- | --- | --- |
+| **[Primeiros passos](manuais/primeiros-passos.md)** | Iniciantes e usuários | Editor, projetos, cenas, nós, scripts, primeiro exemplo |
+| **[Guia de linguagens](manuais/guia-de-linguagens.md)** | Programadores | Diferenças entre GDScript, C#, JS, TS, Lua, C++, Rust e Python |
+| **[Integrar uma nova linguagem](manuais/integrar-nova-linguagem.md)** | Desenvolvedores da engine | `ScriptLanguage`, módulos, GDExtension, bindings, runtime, testes |
+| **[Validação e publicação](manuais/validacao-e-publicacao.md)** | Mantenedores | Compilação, matriz de testes, exportação, licenças e releases |
 
-[See the official docs](https://docs.godotengine.org/en/latest/contributing/development/compiling)
-for compilation instructions for every supported platform.
+### Para quem quer colocar sua própria linguagem no Godot
 
-## Community and contributing
+O guia **[Como integrar uma nova linguagem](manuais/integrar-nova-linguagem.md)** mostra a arquitetura real do Godot e a diferença entre:
+1. Registrar uma **linguagem de script** diretamente no editor;
+2. Criar uma **GDExtension** para expor novas classes nativas;
+3. Integrar um **módulo C++** à compilação da engine.
 
-Godot is not only an engine but an ever-growing community of users and engine
-developers. The main community channels are listed [on the homepage](https://godotengine.org/community).
+Além de exemplos, apresenta o que precisa funcionar para que uma linguagem possa ser considerada integrada: carregamento de scripts, nós, propriedades, sinais, erros, depuração, exportação e testes automatizados.
 
-The best way to get in touch with the core engine developers is to join the
-[Godot Contributors Chat](https://chat.godotengine.org).
+## 🇧🇷 Tradução pt-BR
 
-To get started contributing to the project, see the [contributing guide](CONTRIBUTING.md).
-This document also includes guidelines for reporting bugs.
+O README e os manuais WMK são escritos em português (Brasil). O **Godot já possui tradução da interface** e normalmente permite escolher o idioma nas configurações do editor; traduções de módulos de terceiros podem ser parciais. **A interface do fork ainda não foi auditada nem traduzida integralmente.**
 
-## Documentation and demos
+## Identidade visual
 
-The official documentation is hosted on [Read the Docs](https://docs.godotengine.org).
-It is maintained by the Godot community in its own [GitHub repository](https://github.com/godotengine/godot-docs).
+O símbolo do **WMK CodeVerse** usa o conceito universal de **código** (`</>`), um núcleo geométrico e órbitas que representam diversas linguagens conectadas à mesma engine, sem nomes de linguagens no logotipo.
 
-The [class reference](https://docs.godotengine.org/en/latest/classes/)
-is also accessible from the Godot editor.
+- [Emblema WMK CodeVerse (SVG)](branding/wmk-codeverse-icon.svg)
 
-We also maintain official demos in their own [GitHub repository](https://github.com/godotengine/godot-demo-projects)
-as well as a list of [awesome Godot community resources](https://github.com/godotengine/awesome-godot).
+## Código aberto, créditos e licenciamento
 
-There are also a number of other
-[learning resources](https://docs.godotengine.org/en/latest/community/tutorials.html)
-provided by the community, such as text and video tutorials, demos, etc.
-Consult the [community channels](https://godotengine.org/community)
-for more information.
+**Idealização e personalização WMK:** Walney Moreira Klein — **walneyk@hotmail.com**.
 
-[![Code Triagers Badge](https://www.codetriage.com/godotengine/godot/badges/users.svg)](https://www.codetriage.com/godotengine/godot)
-[![Translate on Weblate](https://hosted.weblate.org/widgets/godot-engine/-/godot/svg-badge.svg)](https://hosted.weblate.org/engage/godot-engine/?utm_source=widget)
-[![TODOs](https://badgen.net/https/api.tickgit.com/badgen/github.com/godotengine/godot)](https://www.tickgit.com/browse?repo=github.com/godotengine/godot)
+O projeto é derivado do **Godot Engine**, software livre sob licença MIT. Todas as licenças e avisos originais devem ser preservados, assim como os avisos das integrações de terceiros. O WMK CodeVerse é independente da Godot Foundation e não deve ser confundido com uma versão oficial do Godot.
+
+- [Projeto original Godot](https://github.com/godotengine/godot)
+- [Documentação Godot em português](https://docs.godotengine.org/pt-br/stable/)
+- [Licença deste repositório](LICENSE.txt)
+
+## Roteiro de desenvolvimento
+
+**Prioridade:** compilar a distribuição, validar uma cena por linguagem, preparar templates de exportação e somente então publicar executáveis marcados como estáveis.
+
+**Contribuições são bem-vindas**, especialmente para novas integrações de linguagem, traduções, exemplos, documentação e testes reproduzíveis.
