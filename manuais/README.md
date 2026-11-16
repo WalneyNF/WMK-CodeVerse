@@ -10,12 +10,17 @@
 
 | Público | Manual | Conteúdo |
 |---|---|---|
+| Desenvolvedor e pesquisador | [WMK PolyCode — Documento técnico em HTML](wmk-polycode.html) | Conceito, arquitetura de extensibilidade, adaptadores, linguagens, APIs, IA/MCP, segurança e roteiro de validação |
 | Usuário iniciante | [Primeiros passos](primeiros-passos.md) | Conceitos, editor, projeto, cenas, nós, scripts e erros comuns |
 | Usuário e programador | [Guia de linguagens](guia-de-linguagens.md) | GDScript, C#, JS/TS, Lua, Python, C++, Rust e diferenças reais |
 | Desenvolvedor da engine | [Como integrar uma nova linguagem](integrar-nova-linguagem.md) | Arquitetura ScriptLanguage, ponte nativa, GDExtension, testes, exportação |
 | Iniciantes e professores | [WMK Portugol](../wmk-portugol/README.md) | Criar programas em português e transpilar para GDScript |
 | Usuários e desenvolvedores de IA | [IA e MCP](ia-mcp.md) | Provedores Ollama, Groq, OpenAI, Gemini e arquitetura MCP |
 | Mantenedor | [Validação e publicação](validacao-e-publicacao.md) | Matriz de testes, licenças, releases, segurança e critérios de pronto |
+
+## WMK PolyCode
+
+**WMK PolyCode** é a iniciativa de arquitetura proposta por **Walney Moreira Klein — walneyk@hotmail.com** para integrar novas linguagens, APIs, MCP e provedores de IA a softwares por meio de adaptadores. O WMK CodeVerse é seu primeiro laboratório. [Leia o documento HTML completo](wmk-polycode.html).
 
 ## Estrutura de estudos
 
