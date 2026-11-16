@@ -49,6 +49,14 @@ O guia **[Como integrar uma nova linguagem](manuais/integrar-nova-linguagem.md)*
 
 Além de exemplos, apresenta o que precisa funcionar para que uma linguagem possa ser considerada integrada: carregamento de scripts, nós, propriedades, sinais, erros, depuração, exportação e testes automatizados.
 
+## 🇧🇷 WMK Portugol — jogos com comandos em português
+
+O CodeVerse possui um primeiro **compilador educacional Portugol → GDScript**, com exemplo, testes Python e workflow próprio. Ainda não é um runtime incorporado ao editor nem uma implementação completa de Portugol Studio.
+
+- [Manual e instalação do WMK Portugol](wmk-portugol/README.md)
+- [Código do compilador](wmk-portugol/compilador.py)
+- [Exemplo de programa](wmk-portugol/exemplos/ola_mundo.por)
+
 ## IA integrada, MCP e provedores (protótipo)
 
 O projeto já possui um servidor MCP de **somente leitura** e clientes CLI iniciais para **Ollama, Groq, OpenAI e Gemini**. **Ainda não há painel integrado ao editor nem validação de execução desses componentes.**
