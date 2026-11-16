@@ -26,7 +26,7 @@ if ($matches.Count -ne 1) { throw "Patch get_extension nao aplicado: esperada 1 
 $replacement='virtual String get_extension() const override { return JSB_JAVASCRIPT_EXT; }'
 $patched=[regex]::Replace($headerText,$pattern,$replacement)
 Set-Content $header -Value $patched -Encoding UTF8 -NoNewline
-# Godot 4.7: Script::instance_has() deixou de ser virtual.
+# Godot 4.7: Script::instance_has() is not virtual anymore.
 # O GodotJS mantem sua implementacao interna, mas nao pode sobrescrever a API base.
 $scriptHeader = Join-Path $godotjs 'weaver/jsb_script.h'
 $scriptHeaderText = Get-Content $scriptHeader -Raw -Encoding UTF8
@@ -39,6 +39,18 @@ $scriptHeaderText = [regex]::Replace($scriptHeaderText, $instancePattern, 'bool 
 Set-Content -Path $scriptHeader -Value $scriptHeaderText -Encoding UTF8 -NoNewline
 Write-Host "Compatibilidade 4.7: instance_has corrigido para API nao virtual."
 
+# Godot 4.7 C++ API adjustments for GodotJS editor integration.
+$exportHeader = Join-Path $godotjs 'weaver-editor/jsb_export_plugin.h'
+Replace-Required $exportHeader 'static const HashSet<String> get_ignored_paths() { return ignored_paths_; }' 'static const HashSet<String>& get_ignored_paths() { return ignored_paths_; }'
+
+$editorCpp = Join-Path $godotjs 'weaver-editor/jsb_editor_plugin.cpp'
+$editorSource = Get-Content $editorCpp -Raw -Encoding UTF8
+if (-not $editorSource.Contains('#include "jsb_editor_plugin.h"')) {
+    throw "JS editor plugin source header not found."
+}
+$editorSource = $editorSource.Replace('#include "jsb_editor_plugin.h"', "#include `"jsb_editor_plugin.h`"`n#include `"servers/display_server.h`"`n#include `"scene/main/scene_tree.h`"")
+Set-Content -Path $editorCpp -Value $editorSource -Encoding UTF8 -NoNewline
+Write-Host 'Godot 4.7 C++ compatibility: HashSet getter and explicit editor headers.'
 $scsub=Join-Path $godotjs 'weaver-editor/templates/SCsub'
 Replace-Required $scsub 'language = "ts" if env["use_typescript"] else "js"' 'language = "js" # WMK: criar JavaScript nativo por padrao, TS permanece reconhecido'
 $movement=Join-Path $godotjs 'weaver-editor/templates/CharacterBody2D/basic_movement.js.cs'
@@ -62,7 +74,7 @@ $languageText = Get-Content $langCpp -Raw -Encoding UTF8
 $namePattern = '(?ms)String\s+GodotJSScriptLanguage::get_name\(\)\s+const\s*\{\s*return\s+jsb_typename\(GodotJSScript\);\s*\}'
 $nameMatches = [regex]::Matches($languageText, $namePattern)
 if ($nameMatches.Count -ne 1) {
-    throw "Patch nome JavaScript nao aplicado: esperada 1 ocorrencia, encontradas $($nameMatches.Count)"
+    throw "JS language identifier patch expected one match; found $($nameMatches.Count)"
 }
 $nameReplacement = 'String GodotJSScriptLanguage::get_name() const { return "JavaScript (WMK)"; }'
 $languageText = [regex]::Replace($languageText, $namePattern, $nameReplacement)
