@@ -23,13 +23,27 @@ jobs:
       - name: Instalar SCons
         shell: pwsh
         run: python -m pip install "scons>=4.7,<5"
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Configurar pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.0
+      - name: Validar dependencias de compilacao
+        shell: pwsh
+        run: |
+          node --version
+          pnpm --version
+          scons --version
       - name: Compilar WMK Godot JS/TS (QuickJS)
         shell: pwsh
         run: ./wmk-js/build-windows.ps1 -WorkDir "$env:RUNNER_TEMP/wmk-godot" -Jobs 2
       - name: Verificar executavel
         shell: pwsh
         run: |
-          $exe = Get-ChildItem "$env:RUNNER_TEMP/wmk-godot/godot/bin" -Filter "*editor*x86_64*.exe" | Select-Object -First 1
+          $exe = Get-ChildItem "$env:RUNNER_TEMP/wmk-godot/godot/bin" -Filter "*editor*x86_64*.exe" | Where-Object { $_.Name -notmatch '\.console\.' } | Select-Object -First 1
           if (-not $exe) { throw "Executavel do editor nao foi encontrado." }
           & $exe.FullName --headless --version
           if ($LASTEXITCODE -ne 0) { throw "Editor compilado falhou ao iniciar." }
