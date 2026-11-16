@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="branding/wmk-codeverse-icon.svg" width="220" alt="Emblema WMK CodeVerse, símbolo universal de código no interior de um hexágono">
+  <img src="branding/mascote/wmk-codebot-banner.png" width="100%" alt="WMK CodeVerse — mascote oficial CodeBot com identidade violeta e ciano">
 </p>
 <h1 align="center">WMK CodeVerse</h1>
 <p align="center"><strong>Uma engine. Sua linguagem. Seu universo.</strong></p>
@@ -16,12 +16,17 @@ O **WMK CodeVerse** é um projeto comunitário e de código aberto baseado na [G
 
 ## WMK CodeBot — Mascote e protagonista oficial
 
-<p align="center"><img src="branding/mascote/wmk-codebot-icon.svg" width="240" alt="Ícone vetorial simplificado do mascote WMK CodeBot"></p>
+<p align="center">
+  <img src="branding/mascote/wmk-codebot-arte-principal.png" width="560" alt="CodeBot WMK, robô futurista com visor hexagonal e capa violeta">
+</p>
 
 O **WMK CodeBot** é o mascote e personagem principal da futura demonstração de jogo 3D do CodeVerse. Sua identidade visual é própria: robô branco/prata, violeta e ciano, com visor geométrico e símbolo de programação `</>`; **não é o mascote do Godot**.
 
 - **[Ficha oficial do mascote e roteiro para Blender + Codex/MCP](branding/mascote/README.md)**
-- **Arte principal e prancha de modelagem 3D:** duas imagens originais aprovadas; ainda precisam ser enviadas ao repositório como arquivos binários. O SVG acima é uma representação vetorial simplificada, não substitui essas referências completas.
+- **[Arte principal do CodeBot](branding/mascote/wmk-codebot-arte-principal.png)** — personagem oficial.
+- **[Prancha de modelagem 3D](branding/mascote/wmk-codebot-prancha-modelagem-3d.png)** — referências de proporções, expressões e vistas.
+- **[Banner oficial](branding/mascote/wmk-codebot-banner.png)** — capa de apresentação do projeto.
+- **Nota de publicação:** estes links dependem do envio dos três arquivos PNG para `branding/mascote/`; as imagens ainda não estão presentes no repositório.
 - **Idealização e direção do personagem:** Walney Moreira Klein — **walneyk@hotmail.com**.
 - **Próximo objetivo:** modelar no Blender, criar rig e exportar `.glb` para um personagem de terceira pessoa funcional com JavaScript.
 
