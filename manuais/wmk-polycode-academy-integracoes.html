@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WMK PolyCode Academy — Integrações</title>
+<style>body{font:16px/1.65 system-ui,Arial;background:#101427;color:#edf0ff;margin:0}header{background:linear-gradient(115deg,#1b2051,#4d2870);padding:35px 5%}main,header>div,footer{max-width:950px;margin:auto}main{padding:20px 22px 60px}a{color:#85e8f1}h2{margin-top:38px;color:#d6baff}pre{background:#191f39;border:1px solid #434969;border-radius:10px;padding:16px;overflow:auto;color:#d9e6ff}aside{border-left:4px solid #bda2ff;padding:12px 20px;background:#232746}footer{padding:18px;color:#b7bed3}</style></head><body>
+<header><div><p>WMK POLYCODE ACADEMY · GUIA DO DESENVOLVEDOR v0.1</p><h1>Criando integrações de linguagens, IA e bancos de dados</h1><p>Um roteiro transparente para aprender, implementar e testar — do Portugol ao PHP, agentes e MCP.</p><p><strong>Idealização e direção:</strong> Walney Moreira Klein — <a href="mailto:walneyk@hotmail.com">walneyk@hotmail.com</a></p></div></header>
+<main>
+<h2>1. Escolher uma arquitetura</h2><p>São três mecanismos distintos: <strong>transpilação</strong> (Portugol → GDScript), <strong>runtime + binding</strong> (Lua/JavaScript controlando objetos Godot) e <strong>processo externo</strong> (PHP, APIs e bancos via HTTP). Uma GDExtension adiciona código nativo, mas não transforma automaticamente uma linguagem em script de nó.</p>
+<pre>LINGUAGEM → [transpilador] → GDScript → Godot
+LINGUAGEM → [runtime + binding] → Object / Variant / ScriptInstance
+PHP / API → [HTTPS / JSON] → cliente HTTP Godot</pre>
+<h2>2. Laboratório Portugol: passo a passo</h2><p>Pré-requisitos: Python 3.10+ e Godot 4.x. Baixe o <a href="https://github.com/WalneyNF/WMK-CodeVerse">WMK CodeVerse</a>.</p>
+<pre>git clone https://github.com/WalneyNF/WMK-CodeVerse.git
+cd WMK-CodeVerse
+py wmk-portugol/compilador.py wmk-portugol/exemplos/ola_mundo.por
+py -m unittest discover -s wmk-portugol -p "test_*.py" -v</pre>
+<p>Abra <a href="../wmk-portugol/compilador.py">compilador.py</a>: estude tabelas de tipos e palavras reservadas, transformação de expressões, blocos e geração de código. Crie no Godot uma cena com nó Node2D, adicione o arquivo <code>ola_mundo.gd</code> gerado e execute. O resultado deve incluir <code>WMK_PORTUGOL_OK</code> na saída.</p>
+<aside>O compilador atual é um subconjunto educacional. Não aceita Portugol Studio completo, nem executa arquivos .por diretamente no Godot. Para expandir, implemente lexer → parser → AST → validação semântica → emissor e testes com erro por linha.</aside>
+<h2>3. Exemplo PHP: comunicação externa</h2><p>Crie <code>php-api/estado.php</code>:</p>
+<pre>&lt;?php
+header('Content-Type: application/json');
+echo json_encode(['jogador'=>'WMK', 'vida'=>100]);</pre>
+<p>Inicie somente localmente:</p><pre>php -S 127.0.0.1:8787 -t php-api</pre>
+<p>No Godot, crie Node + HTTPRequest filho e anexe este GDScript ao Node:</p>
+<pre>extends Node
+@onready var http: HTTPRequest = $HTTPRequest
+
+func _ready() -> void:
+    http.request_completed.connect(_resposta)
+    var erro := http.request("http://127.0.0.1:8787/estado.php")
+    if erro != OK:
+        push_error("Falha ao iniciar HTTP: %s" % erro)
+
+func _resposta(resultado: int, status: int,
+        _cabecalhos: PackedStringArray, corpo: PackedByteArray) -> void:
+    if resultado != HTTPRequest.RESULT_SUCCESS or status != 200:
+        push_error("HTTP falhou")
+        return
+    var dados = JSON.parse_string(corpo.get_string_from_utf8())
+    if typeof(dados) != TYPE_DICTIONARY:
+        push_error("JSON invalido")
+        return
+    print("WMK_PHP_OK ", dados.get("jogador"))</pre>
+<p>Isso comprova Godot ↔ PHP via HTTP, não PHP nativo na cena. O servidor embutido é para desenvolvimento, não produção. Se desejar script PHP anexável ao nó, será preciso estudar embedding do runtime PHP, bindings Godot, ciclo de vida, memória, threads, distribuição e exportação.</p>
+<h2>4. Como integrar uma linguagem nativa</h2><p>Estude <a href="https://github.com/WalneyNF/WMK-CodeVerse/blob/master/core/object/script_language.h">ScriptLanguage</a>, <a href="https://github.com/WalneyNF/WMK-CodeVerse/blob/master/core/object/script_instance.h">ScriptInstance</a> e <a href="https://github.com/WalneyNF/WMK-CodeVerse/blob/master/modules/gdscript/register_types.cpp">registro de GDScript</a>. Implemente carregamento de script, instâncias por nó, mapeamento Variant, métodos, propriedades, sinais, erros, depuração e exportação. O <a href="integrar-nova-linguagem.md">guia arquitetural detalhado</a> acompanha esse trabalho.</p>
+<h2>5. Provedores, agentes e MCP</h2><p>Provedor de modelo (Ollama, Groq, OpenAI, Gemini, Anthropic) <strong>não é a mesma coisa</strong> que agente (OpenCode, Codex, Claude Code). Eles precisam de adaptadores diferentes. Interfaces candidatas incluem ACP/servidor do OpenCode, app server do Codex e SDK/CLI documentados do Claude Code. Não estão integrados no editor ainda.</p>
+<p>O <a href="../wmk-ai/README.md">wmk-ai/</a> possui clientes CLI iniciais e servidor MCP de leitura. Um painel futuro precisa de cadastro, seleção de modelo, armazenamento seguro de credenciais, aprovação antes de escrever arquivos, limites de uso e logs de auditoria.</p>
+<h2>6. Jogos com bancos de dados</h2><pre>Jogo Godot → HTTPS → API autenticada (PHP/Python/Node)
+                                     ↓
+                     MySQL / MariaDB / PostgreSQL
+                     ou Supabase com regras RLS</pre>
+<p>Use SQLite para armazenamento local/offline. Nunca distribua senha root de MySQL, credenciais de serviço ou chaves secretas no jogo. Para Supabase no cliente, configure autenticação e Row-Level Security; chaves secretas pertencem ao backend. Valide toda pontuação, economia e inventário no servidor.</p>
+<h2>7. Compilar, verificar e contribuir</h2><p>O projeto usa uma branch de integração separada da base histórica do Godot. O manual <a href="compilacao-reproduzivel-wmk.md">Compilação reproduzível no Windows</a> contém versões fixadas, comandos, etapas do Actions, erros conhecidos e critérios de conclusão.</p>
+<p>Uma integração só deve ser anunciada como pronta após build aprovado, execução de cena real, testes de erro, exportação, documentação e licenças verificadas. Traga um projeto mínimo, script de teste, versões e logs completos para cada contribuição.</p>
+<h2>8. Ideias de evolução</h2><p>Assistente de criação de adaptadores, catálogo comunitário assinado, exemplos por linguagem, matriz automática de compatibilidade, gerador de testes, simulador de chamadas API, editor Portugol com mapa de erros e professor de IA para explicar o código.</p>
+<p><strong>Créditos:</strong> WMK PolyCode — idealização e direção: Walney Moreira Klein — walneyk@hotmail.com. Técnicas como runtimes, compiladores, bindings e MCP são preexistentes. Preserve licenças e atribuições de terceiros.</p></main><footer>WMK PolyCode Academy • Walney Moreira Klein — walneyk@hotmail.com • 2026</footer></body></html>
