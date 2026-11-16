@@ -33,8 +33,33 @@ jobs:
           if (!(Test-Path pacote/GodotSharp/Tools)) { throw 'GodotSharp/Tools ausente' }
           if (!(Test-Path pacote/WMK-JS-Demo/project.godot)) { throw 'Demo JS ausente' }
           if (!(Test-Path pacote/WMK-Lua-Demo/project.godot)) { throw 'Demo Lua ausente' }
-          & $exe[0].FullName --headless --version
-          if ($LASTEXITCODE -ne 0) { throw 'Editor nao inicializou em modo headless' }
+          # Godot pode imprimir a versao e retornar exit code nao-zero nesta configuracao.
+          # A versao so valida a identidade do binario; os testes reais abaixo
+          # comprovam que cenas JavaScript e Lua inicializam e executam.
+          $versionOutput = & $exe[0].FullName --headless --version 2>&1 | Out-String
+          $versionExit = $LASTEXITCODE
+          Write-Host "VERSION_EXIT=$versionExit"
+          Write-Host $versionOutput
+          if ($versionOutput -notmatch '4\.6\.1\.stable\.mono') {
+            throw 'Executavel Windows nao identificou a versao 4.6.1 Mono esperada'
+          }
+          if ($versionExit -ne 0) {
+            Write-Warning "O comando --version retornou $versionExit; exigindo execucao real dos projetos de teste."
+          }
+          $checks = @(
+            @{ Name = 'JavaScript'; Project = 'WMK-JS-Demo'; Marker = 'WMK_JS_OK' },
+            @{ Name = 'Lua'; Project = 'WMK-Lua-Demo'; Marker = 'WMK_LUA_54_OK' }
+          )
+          foreach ($check in $checks) {
+            $projectPath = Join-Path (Resolve-Path 'pacote').Path $check.Project
+            $output = & $exe[0].FullName --headless --path $projectPath --quit-after 20 2>&1 | Out-String
+            $exitCode = $LASTEXITCODE
+            Write-Host "$($check.Name) EXIT=$exitCode"
+            Write-Host $output
+            if ($exitCode -ne 0 -or $output -notmatch $check.Marker -or $output -match '(?m)^\s*(?:ERROR:|FATAL:)') {
+              throw "Teste real $($check.Name) falhou: exit=$exitCode, marcador=$($check.Marker)"
+            }
+          }
 
       - name: Empacotar ZIP
         shell: pwsh
