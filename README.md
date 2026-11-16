@@ -14,6 +14,18 @@ O **WMK CodeVerse** é um projeto comunitário e de código aberto baseado na [G
 
 > **Estado atual:** este repositório tem uma base histórica do **Godot 4.4 dev**. **A edição multilinguagem ainda não está validada como executável pronto.** As integrações experimentais devem ser testadas e compiladas antes de serem anunciadas como funcionais.
 
+## WMK PolyCode — Tecnologia de Integração e Extensibilidade
+
+**WMK PolyCode** é o nome dado à nossa proposta de arquitetura para investigar os mecanismos de extensão de softwares, conectar linguagens de programação, runtimes, APIs, servidores MCP e provedores de inteligência artificial por meio de adaptadores específicos.
+
+**Visão:** *Conectando motores, linguagens e inteligência artificial.*
+
+O **WMK CodeVerse** é o primeiro laboratório dessa arquitetura, com destaque para o **Portugol 🇧🇷**. PolyCode não é uma nova linguagem nem uma camada universal já pronta: é um conceito de engenharia em desenvolvimento, que depende de APIs, contratos, permissões e testes reais para cada aplicação.
+
+- **[Conheça o WMK PolyCode — documento técnico completo em HTML](manuais/wmk-polycode.html)**
+- **Idealização e direção do conceito:** Walney Moreira Klein — **walneyk@hotmail.com**.
+- **Desenvolvimento inicial:** integrações experimentais de linguagens, Portugol, IA e MCP no CodeVerse; reutilização fora do Godot ainda não validada.
+
 ## Linguagens e possibilidades
 
 **🇧🇷 Destaque: Portugol aparece primeiro!** Nossa proposta educacional permite escrever um subconjunto de comandos em português e convertê-los em GDScript. Ainda não significa que arquivos `.por` sejam executados diretamente pelo editor.
@@ -38,6 +50,7 @@ Toda a documentação WMK começa em **[Biblioteca de Manuais](manuais/README.md
 
 | Manual | Para quem | O que ensina |
 | --- | --- | --- |
+| **[WMK PolyCode — arquitetura e visão (HTML)](manuais/wmk-polycode.html)** | Desenvolvedores e pesquisadores | Extensibilidade, linguagens, runtimes, APIs, MCP, IA, adaptadores, segurança e roadmap |
 | **[WMK Portugol — programar em português](wmk-portugol/README.md)** | Iniciantes, professores e programadores | Sintaxe, conversão para GDScript, exemplos e testes |
 | **[Primeiros passos](manuais/primeiros-passos.md)** | Iniciantes e usuários | Editor, projetos, cenas, nós, scripts, primeiro exemplo |
 | **[Guia de linguagens](manuais/guia-de-linguagens.md)** | Programadores | Diferenças entre GDScript, C#, JS, TS, Lua, C++, Rust e Python |
