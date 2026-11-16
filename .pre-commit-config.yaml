@@ -67,8 +67,12 @@ repos:
     rev: v2.3.0
     hooks:
       - id: codespell
+        # O dicionario ingles do codespell altera incorretamente textos em pt-BR.
+        # Preservar documentacao WMK; manter verificacao nos arquivos do Godot.
         exclude: |
           (?x)^(
+            README\.md$|
+            manuais/.*|
             platform/android/java/editor/src/main/java/com/android/.*|
             platform/android/java/lib/src/com/.*
           )
