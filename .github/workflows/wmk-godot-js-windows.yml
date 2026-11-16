@@ -55,10 +55,11 @@ jobs:
       - name: Testar execucao Lua com diagnosticos e cena real
         shell: pwsh
         run: ./wmk-js/test-lua.ps1 -Distribution "$env:RUNNER_TEMP/wmk-five-languages/WMK-Godot-Five-Languages"
-      - name: Publicar edicao WMK
+      - name: Publicar edicao WMK mesmo se testes falharem
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: WMK-Godot-Five-Languages-Windows
           path: ${{ runner.temp }}/wmk-five-languages/WMK-Godot-Five-Languages/
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 14
