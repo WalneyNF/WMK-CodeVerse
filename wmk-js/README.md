@@ -1,31 +1,52 @@
-# WMK Godot com JavaScript e TypeScript
+# WMK Godot — GDScript, C#, JavaScript, TypeScript e Lua
 
-**Projeto:** Walney Moreira Klein — walneyk@hotmail.com.
+**Autor:** Walney Moreira Klein — walneyk@hotmail.com.
 
-Esta branch contem a automacao de integracao do GodotJS no Godot. O fork original `WalneyNF/godot` utiliza codigo Godot 4.4 dev, enquanto o modulo GodotJS atual e construido oficialmente sobre Godot 4.6.1. Para evitar alterar a base historica e perder modificacoes, a compilacao usa a fonte oficial Godot **4.6.1-stable** em pasta isolada e incorpora o modulo do fork **WalneyNF/GodotJS**, fixado no commit `b1d8b3f4d4688d216657364ddc53db0813444411`.
+Esta branch prepara a compilação de uma edição Godot para Windows que usa:
+- **GDScript:** integrado nativamente ao Godot.
+- **C# (.NET):** módulo `mono` compilado juntamente com assemblies `GodotSharp`.
+- **JavaScript:** módulo nativo `GodotJS` com QuickJS-NG.
+- **TypeScript:** suporte do GodotJS, com transpilation/build JS no projeto.
+- **Lua 5.4:** *GDExtension* do projeto `gilzoide/lua-gdextension`, distribuída dentro do projeto-modelo; não embutida no executável.
 
-## Compilar no Windows
-Requisitos: Git, Python 3.11+, SCons e compilador C++ MSVC/Visual Studio com suporte C++ para desktop.
+## Importante: versão do Godot
+O fork histórico `WalneyNF/godot` na branch `master` está em **Godot 4.4 dev**. O script baixa uma base isolada Godot **4.6.1-stable** para compatibilidade com o fork `WalneyNF/GodotJS`. **A base 4.4 não foi modificada**. O código do GodotJS está registrado na branch como submódulo em `modules/GodotJS`; o script seleciona o mesmo commit na base 4.6.1.
+
+## Compilação no GitHub Actions
+Entre em **Actions > WMK Godot - GDScript CSharp JS TS Lua**, selecione a branch `wmk-js-ts-integration` e execute **Run workflow**.
+
+O workflow:
+1. Instala Python/SCons, .NET SDK, Node e pnpm;
+2. Compila Godot 4.6.1, com `module_mono_enabled=yes` e `use_quickjs_ng=yes`;
+3. Gera `mono` glue e assemblies C#;
+4. Obtém a Lua GDExtension 0.8.2 e prepara `WMK-Lua-Demo`;
+5. Inicia uma cena Lua e exige `WMK_LUA_54_OK` no log;
+6. Publica o artefato **WMK-Godot-Five-Languages-Windows**, apenas se todas as etapas passarem.
+
+**Os testes C# e JS/TS dentro de projetos ainda precisam ser adicionados:** compilação com flags habilitadas, por si só, não confirma que cada linguagem funciona em uma cena.
+
+## Compilação local — Windows
+Requisitos: Visual Studio com C++ para desktop, Python, Git, SCons, Node, pnpm e SDK .NET.
 
 ```powershell
 py -m pip install scons
-powershell -ExecutionPolicy Bypass -File .\wmk-js\build-windows.ps1 -WorkDir D:\Ferramentas\WMK-GodotJS-Build -Jobs 2
+npm install -g pnpm@10.11.0
+powershell -ExecutionPolicy Bypass -File .\wmk-js\build-five-languages.ps1 -WorkDir D:\Ferramentas\WMK-Godot-Build -Jobs 2
+powershell -ExecutionPolicy Bypass -File .\wmk-js\install-lua.ps1 -Distribution D:\Ferramentas\WMK-Godot-Build\WMK-Godot-Five-Languages
 ```
 
-Ao finalizar, o executavel do editor aparece em `D:\Ferramentas\WMK-GodotJS-Build\godot\bin\`.
+Abra `WMK-Lua-Demo/project.godot` pelo executável gerado para experimentar Lua. Para novos projetos Lua, copie `addons/lua-gdextension` para a pasta do projeto. O teste usa `welcome.lua`.
 
-## Compilar via GitHub Actions
-No repositorio, abra **Actions > WMK Godot JS TS - Windows > Run workflow** na branch `wmk-js-ts-integration`. Se o build passar, baixe o artefato **WMK-Godot-JS-TS-Windows**.
+## Licenças e atribuições
+Godot e GodotJS: consulte os respectivos arquivos LICENSE. Lua GDExtension: MIT; preserve os avisos de licença no pacote de terceiros.
 
-## Como usar JS/TS
-O suporte a JS e implementado pelo modulo GodotJS dentro de `modules/GodotJS`. Para TypeScript, configure o preset pelo menu `Project > Tools > GodotJS > Install Preset files` no editor compilado e execute `npm install` seguido de `npx tsc`, conforme versao e exemplo do modulo.
+## Estado
+- [x] Integração de fonte GodotJS como submódulo do fork
+- [x] Workflow Windows para GDScript, .NET, JS e TS
+- [x] Instalador e projeto de teste Lua 5.4
+- [ ] Compilação integral confirmada
+- [ ] Execução do script Lua comprovada pelo workflow
+- [ ] Testes C# e JS/TS em cenas
+- [ ] Exportação de jogos confirmada
 
-## Status
-- [x] Script Windows para integrar modulo e iniciar compilacao
-- [x] Workflow para build Windows e publicacao de artefato
-- [ ] Compilacao confirmada no GitHub Actions
-- [ ] Script JS de teste executado no editor
-- [ ] Export Windows validado
-- [ ] Retorno das alteracoes para a master, somente apos validacao
-
-**Nao confundir:** adicionar a automacao ao GitHub nao comprova que a compilacao concluiu. O source original 4.4 dev nao foi atualizado: o build produz uma distribuicao baseada em 4.6.1 com o modulo JS/TS.
+Nenhuma falha de compilação deve ser interpretada como sucesso. Os logs e resultados oficiais ficam no GitHub Actions.
