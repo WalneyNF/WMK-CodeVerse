@@ -9,6 +9,10 @@ on:
       - "wmk-portugol/**"
       - "branding/**"
       - ".github/workflows/wmk-godot-js-windows.yml"
+concurrency:
+  group: wmk-codeverse-godot-4-7-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 jobs:
@@ -46,6 +50,11 @@ jobs:
           node --version
           pnpm --version
           scons --version
+      - name: Verificar sintaxe do migrador ClassDB
+        shell: pwsh
+        run: |
+          python -m py_compile ./wmk-js/compat-classdb-4.7.py
+
       - name: Compilar Godot com .NET JS e TS
         shell: pwsh
         run: ./wmk-js/build-five-languages.ps1 -WorkDir "$env:RUNNER_TEMP/wmk-five-languages" -Jobs 2
