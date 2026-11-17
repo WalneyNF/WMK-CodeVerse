@@ -44,7 +44,7 @@ try {
 
     # JS/TS: GodotJS; C#: Godot .NET; GDScript: modulo original.
     # QuickJS-NG evita bibliotecas V8 pre-compiladas.
-    scons platform=windows target=editor arch=x86_64 module_mono_enabled=yes use_quickjs_ng=yes use_typescript=yes d3d12=no -j $Jobs
+    scons platform=windows target=editor arch=x86_64 module_mono_enabled=yes use_quickjs_ng=yes use_typescript=no d3d12=no -j $Jobs
     Check "Compilacao do editor"
 
     $bin = Join-Path $root "bin"
@@ -69,11 +69,11 @@ try {
     Copy-Item $editor.FullName -Destination $output -Force
     Copy-Item $assemblyDir -Destination (Join-Path $output "GodotSharp") -Force -Recurse
     Set-Content (Join-Path $output "README-WMK.txt") -Encoding utf8 -Value @"
-WMK GODOT - CINCO LINGUAGENS (distribuicao de testes)
+WMK CodeVerse 4.6.1 - edicao de testes para jogos JavaScript e Portugol
 GDScript: modulo do editor Godot
 C#: integrado ao build .NET e distribuido com GodotSharp
 JS: modulo GodotJS compilado com QuickJS-NG
-TS: ferramenta GodotJS habilitada, requer compilacao TS por projeto
+TS: desabilitado nesta edicao de testes para priorizar JavaScript puro (.js)
 Lua 5.4: extensao GDExtension no projeto-modelo; NAO integrada ao binario.
 Autor: Walney Moreira Klein - walneyk@hotmail.com
 "@

@@ -1,0 +1,47 @@
+name: WMK 4.6.1 - Pacote de Testes Imediato
+on:
+  workflow_dispatch:
+  push:
+    branches: [wmk-4.6.1-jogos-js-portugol]
+    paths:
+      - "wmk-js/jogos-iniciais/**"
+      - "wmk-js/preparar-jogos.ps1"
+      - "wmk-js/testar-jogos.ps1"
+      - "wmk-portugol/**"
+      - "wmk-language-kit/**"
+      - ".github/workflows/wmk-pacote-jogos461.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  win-pack:
+    runs-on: windows-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Recuperar editor 4.6.1 que ja passou compilacao
+        uses: actions/download-artifact@v4
+        with:
+          name: WMK-Godot-Five-Languages-Windows
+          run-id: 43912110780
+          repository: ${{ github.repository }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/wmk-jogos461/WMK-Godot-Five-Languages
+      - name: Preparar dois jogos editaveis
+        shell: pwsh
+        run: ./wmk-js/preparar-jogos.ps1 -Distribution "$env:RUNNER_TEMP/wmk-jogos461/WMK-Godot-Five-Languages"
+      - name: Testar JS e Portugol com cenas reais no editor
+        shell: pwsh
+        run: ./wmk-js/testar-jogos.ps1 -Distribution "$env:RUNNER_TEMP/wmk-jogos461/WMK-Godot-Five-Languages"
+      - name: Disponibilizar Windows ZIP se ambos os jogos passarem
+        uses: actions/upload-artifact@v4
+        with:
+          name: WMK-CodeVerse-4.6.1-Jogos-Testados-Windows
+          path: ${{ runner.temp }}/wmk-jogos461/WMK-Godot-Five-Languages/
+          if-no-files-found: error
+          retention-days: 30

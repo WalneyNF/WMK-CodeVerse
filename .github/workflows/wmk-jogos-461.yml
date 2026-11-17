@@ -1,0 +1,59 @@
+name: WMK 4.6.1 - Compilar Jogos JS e Portugol
+on:
+  workflow_dispatch:
+  push:
+    branches: [wmk-4.6.1-jogos-js-portugol]
+    paths:
+      - "wmk-js/**"
+      - "wmk-portugol/**"
+      - "wmk-language-kit/**"
+      - ".github/workflows/wmk-jogos-461.yml"
+
+concurrency:
+  group: wmk-jogos461-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.0
+      - name: Instalar SCons
+        shell: pwsh
+        run: python -m pip install "scons>=4.7,<5"
+      - name: Compilar editor Godot 4.6.1 com JavaScript puro
+        shell: pwsh
+        run: ./wmk-js/build-five-languages.ps1 -WorkDir "$env:RUNNER_TEMP/wmk-jogos461" -Jobs 2
+      - name: Preparar dois jogos editaveis
+        shell: pwsh
+        run: ./wmk-js/preparar-jogos.ps1 -Distribution "$env:RUNNER_TEMP/wmk-jogos461/WMK-Godot-Five-Languages"
+      - name: Testar jogo JavaScript e jogo Portugol (cenas reais)
+        shell: pwsh
+        run: ./wmk-js/testar-jogos.ps1 -Distribution "$env:RUNNER_TEMP/wmk-jogos461/WMK-Godot-Five-Languages"
+      - name: Testar motor JS em cena minima
+        shell: pwsh
+        run: ./wmk-js/test-js.ps1 -Distribution "$env:RUNNER_TEMP/wmk-jogos461/WMK-Godot-Five-Languages"
+      - name: Publicar pacote somente apos os testes aprovados
+        uses: actions/upload-artifact@v4
+        with:
+          name: WMK-CodeVerse-4.6.1-Jogos-JS-Portugol-Windows
+          path: ${{ runner.temp }}/wmk-jogos461/WMK-Godot-Five-Languages/
+          if-no-files-found: error
+          retention-days: 30
