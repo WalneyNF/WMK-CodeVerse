@@ -51,6 +51,10 @@ if (-not $editorSource.Contains('#include "jsb_editor_plugin.h"')) {
 $editorSource = $editorSource.Replace('#include "jsb_editor_plugin.h"', "#include `"jsb_editor_plugin.h`"`n#include `"servers/display_server.h`"`n#include `"scene/main/scene_tree.h`"")
 Set-Content -Path $editorCpp -Value $editorSource -Encoding UTF8 -NoNewline
 Write-Host 'Godot 4.7 C++ compatibility: HashSet getter and explicit editor headers.'
+# ClassDB 4.7 no longer exposes legacy enum/constant/signal fields.
+$compatScript = Join-Path $PSScriptRoot 'compat-classdb-4.7.py'
+python $compatScript $EngineRoot
+if ($LASTEXITCODE -ne 0) { throw 'GodotJS ClassDB 4.7 compatibility patch failed.' }
 $scsub=Join-Path $godotjs 'weaver-editor/templates/SCsub'
 Replace-Required $scsub 'language = "ts" if env["use_typescript"] else "js"' 'language = "js" # WMK: criar JavaScript nativo por padrao, TS permanece reconhecido'
 $movement=Join-Path $godotjs 'weaver-editor/templates/CharacterBody2D/basic_movement.js.cs'
