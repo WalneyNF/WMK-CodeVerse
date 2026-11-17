@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://jogador.js" id="1"]
+
+[node name="WMKJSJogo" type="Node2D"]
+
+[node name="Jogador" type="Node2D" parent="."]
+position = Vector2(380, 220)
+script = ExtResource("1")
+
+[node name="Corpo" type="ColorRect" parent="Jogador"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.52, 0.25, 0.94, 1)
+
+[node name="Instrucoes" type="Label" parent="."]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 780.0
+offset_bottom = 80.0
+text = "WMK CodeVerse | JavaScript (.js) | Use as setas para mover o quadrado"
