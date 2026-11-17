@@ -31,7 +31,7 @@ def replace_region(code: str, start: str, end: str, new: str, label: str) -> str
 def patch(code: str) -> str:
     code = replace_once(
         code,
-        "namespace jsb\n{\n    namespace\n    {",
+        "namespace jsb\n{\n    namespace\n    {\n        template<int N>",
         """namespace jsb
 {
     namespace
@@ -42,7 +42,8 @@ def patch(code: str) -> str:
             List<StringName> constants;
             bool is_bitfield = false;
         };
-""",
+
+        template<int N>""",
         "WMKEnumInfo",
     )
     count = code.count("ClassDB::ClassInfo::EnumInfo")
