@@ -53,7 +53,7 @@ jobs:
       - name: Verificar sintaxe do migrador ClassDB
         shell: pwsh
         run: |
-          python -m py_compile ./wmk-js/compat-classdb-4.7.py
+          python -m py_compile ./wmk-js/compat-classdb-4.7.py ./wmk-js/compat-object-bindings-4.7.py
 
       - name: Compilar Godot com .NET JS e TS
         shell: pwsh
