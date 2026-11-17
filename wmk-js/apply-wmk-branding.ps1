@@ -55,6 +55,9 @@ Write-Host 'Godot 4.7 C++ compatibility: HashSet getter and explicit editor head
 $compatScript = Join-Path $PSScriptRoot 'compat-classdb-4.7.py'
 python $compatScript $EngineRoot
 if ($LASTEXITCODE -ne 0) { throw 'GodotJS ClassDB 4.7 compatibility patch failed.' }
+$objectCompat = Join-Path $PSScriptRoot 'compat-object-bindings-4.7.py'
+python $objectCompat $EngineRoot
+if ($LASTEXITCODE -ne 0) { throw 'GodotJS object bindings compatibility patch failed.' }
 $scsub=Join-Path $godotjs 'weaver-editor/templates/SCsub'
 Replace-Required $scsub 'language = "ts" if env["use_typescript"] else "js"' 'language = "js" # WMK: criar JavaScript nativo por padrao, TS permanece reconhecido'
 $movement=Join-Path $godotjs 'weaver-editor/templates/CharacterBody2D/basic_movement.js.cs'
